@@ -1,0 +1,2 @@
+build := -f $(srctree)/scripts/Makefile.build.sub dir
+real-prereqs = $(filter-out $(PHONY), $^)

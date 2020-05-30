@@ -1,0 +1,5 @@
+.clangformat
+
+obj/
+bin/
+.vscode/

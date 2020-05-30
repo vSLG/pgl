@@ -1,0 +1,64 @@
+## This file builds targets.
+## Should be used with $(MAKE) $(build)=directory-to-build
+## else it is likely to fail.
+
+# Default rule
+PHONY := __build
+__build:
+
+# Initialize variables used by included files.
+# obj-o holds objects to be built, in relative path.
+obj-o    :=
+cflags   :=
+subdir-o :=
+
+include scripts/Makefile.include.sub
+include $(dir)/Makefile
+
+# Where objects will be stored.
+objdir := $(objtree)/$(dir)
+
+# Check if there is any "value/"
+subdir-o += $(patsubst %/, %, $(filter %/, $(obj-o)))
+subdir-o := $(sort $(subdir-o))
+
+# Transform any "value/" to "value/built-in.a" 
+obj-o := $(patsubst %/, %/built-in.a, $(obj-o))
+
+# Point %.o targets to its respective obj directory
+obj-o    := $(addprefix $(objdir)/, $(obj-o))
+
+# Do not use $(objdir) here as this Makefile will descent into it
+# in the source tree, not object tree.
+subdir-o := $(addprefix $(dir)/, $(subdir-o))
+
+# Final C flags to use with $(CC) command.
+c_flags = $(strip $(BUILD_CFLAGS) $(INCLUDE_DIR) $(cflags))
+
+builtin-target := $(objdir)/built-in.a
+
+$(objdir)/%.o: $(dir)/%.c
+	$(CC) $(c_flags) -c -o $@ $<
+
+$(objdir)/%.o: $(dir)/%.cpp
+	$(CXX) $(c_flags) -c -o $@ $<
+
+
+# Needed by $(builtin-target)
+$(objdir)/%/built-in.a: $(dir)/% ;
+
+# Archive everything needed
+$(builtin-target): $(obj-o)
+	$(AR) cDPrTSs $@ $(real-prereqs)
+
+# Descend into other subdirectories
+PHONY += $(subdir-o)
+$(subdir-o):
+	@$(MAKE) $(build)=$@
+
+__build: $(builtin-target) $(subdir-o)
+	@:
+
+$(shell mkdir -p $(objdir))
+
+.PHONY: $(PHONY)
