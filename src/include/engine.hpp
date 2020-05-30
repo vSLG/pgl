@@ -1,5 +1,6 @@
 #pragma once
 
+#include <GL/gl.h>
 #include <SDL2/SDL.h>
 
 class Engine {
@@ -27,7 +28,7 @@ class Engine {
   private:
     void          checkSDL();
     SDL_Window *  window;
-    SDL_Renderer *renderer;
+    SDL_GLContext glContext;
     bool          isRunning   = false;
     unsigned int  _frameCount = 0;
 };

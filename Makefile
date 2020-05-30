@@ -21,7 +21,7 @@ BUILD_CFLAGS  := -Wall -Wundef -O2 $(CFLAGS)
 
 export BUILD_CFLAGS INCLUDE_DIR SHELL CC AR
 
-link_libraries := -lSDL2
+link_libraries := -lSDL2 -lGL
 build-dirs     := src
 
 
