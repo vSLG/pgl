@@ -1,7 +1,7 @@
 #include <engine.hpp>
 #include <stdexcept>
 
-#include <GL/gl.h>
+#include <glad/glad.h>
 
 Engine::Engine() {
     checkSDL();
@@ -28,7 +28,10 @@ void Engine::initInternals(int w, int h) {
 
     glContext = SDL_GL_CreateContext(window);
 
+    gladLoadGLLoader((GLADloadproc) SDL_GL_GetProcAddress);
+
     if (!(window && glContext))
+        // TODO
         throw std::runtime_error("Could not initialize window or OpenGL context.");
 
     isRunning = true;
@@ -39,6 +42,7 @@ void Engine::background(int r, int g, int b) {
 }
 
 void Engine::stop() {
+    // TODO
     SDL_DestroyWindow(window);
     SDL_Quit();
 }

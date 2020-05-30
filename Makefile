@@ -16,12 +16,12 @@ CC = gcc
 CXX = g++
 AR = ar
 
-INCLUDE_DIR   := -I$(srctree)/src/include
+INCLUDE_DIR   := -I$(srctree)/include
 BUILD_CFLAGS  := -Wall -Wundef -O2 $(CFLAGS)
 
 export BUILD_CFLAGS INCLUDE_DIR SHELL CC AR
 
-link_libraries := -lSDL2 -lGL
+link_libraries := -lSDL2 -lGL -ldl
 build-dirs     := src
 
 

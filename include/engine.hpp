@@ -1,6 +1,5 @@
 #pragma once
 
-#include <GL/gl.h>
 #include <SDL2/SDL.h>
 
 class Engine {
@@ -26,7 +25,8 @@ class Engine {
     void handleEvents();
 
   private:
-    void          checkSDL();
+    void checkSDL();
+
     SDL_Window *  window;
     SDL_GLContext glContext;
     bool          isRunning   = false;
