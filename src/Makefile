@@ -1,1 +1,1 @@
-obj-o += main.o
+obj-o += $(patsubst $(dir)/%.cpp, %.o, $(wildcard $(dir)/*.cpp))
