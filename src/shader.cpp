@@ -5,7 +5,9 @@
 #include <sstream>
 #include <stdexcept>
 
-Shader::Shader(const char *shaderPath) {
+const std::set<std::string> Shader::supportedShaderExt = {"frag", "vert"};
+
+Shader::Shader(const std::string &shaderPath) {
     unsigned shaderTypes[] = {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER};
     id                     = glCreateProgram();
 
@@ -45,6 +47,10 @@ Shader::Shader(const char *shaderPath) {
 
         glDeleteShader(shader);
     }
+}
+
+Shader::~Shader() {
+    glDeleteProgram(id);
 }
 
 void Shader::use() {

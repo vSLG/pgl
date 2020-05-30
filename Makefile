@@ -18,8 +18,9 @@ AR = ar
 
 INCLUDE_DIR   := -I$(srctree)/include
 BUILD_CFLAGS  := -Wall -Wundef -O2 $(CFLAGS)
+BUILD_CXXFLAGS := -g -Wall -O2 -std=c++17 $(CXXFLAGS)
 
-export BUILD_CFLAGS INCLUDE_DIR SHELL CC AR
+export BUILD_CFLAGS BUILD_CXXFLAGS INCLUDE_DIR SHELL CC AR
 
 link_libraries := -lSDL2 -lGL -ldl
 build-dirs     := src

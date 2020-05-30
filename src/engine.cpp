@@ -1,10 +1,20 @@
-#include <engine.hpp>
+#include <filesystem>
+#include <iostream>
+#include <set>
 #include <stdexcept>
+
+#include <engine.hpp>
+#include <util.hpp>
 
 #include <glad/glad.h>
 
+namespace fs = std::filesystem;
+
 Engine::Engine() {
     checkSDL();
+
+    isRunning   = false;
+    _frameCount = 0;
 }
 Engine::~Engine() {
 }
@@ -22,8 +32,8 @@ void Engine::initInternals(int w, int h) {
                               h,
                               SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 4);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
     glContext = SDL_GL_CreateContext(window);
@@ -35,6 +45,7 @@ void Engine::initInternals(int w, int h) {
         throw std::runtime_error("Could not initialize window or OpenGL context.");
 
     isRunning = true;
+    loadAllShaders(std::getenv("srctree") + std::string("/src/shader"));
 }
 
 void Engine::background(int r, int g, int b) {
@@ -69,5 +80,30 @@ void Engine::handleEvents() {
             break;
         default:
             break;
+    }
+}
+
+bool Engine::running() {
+    return isRunning;
+}
+
+unsigned Engine::frameCount() {
+    return _frameCount;
+}
+
+void Engine::loadAllShaders(const std::string &dir) {
+    std::set<std::string> shadersPath;
+    for (const auto &entry : fs::directory_iterator(dir)) {
+        std::vector<std::string> pathParts = Utils::split(entry.path(), '.');
+
+        if (Shader::supportedShaderExt.find(pathParts.back()) != Shader::supportedShaderExt.end()) {
+            pathParts.pop_back();
+            std::string shaderPath = Utils::join(pathParts, '.');
+            if (shadersPath.find(shaderPath) == shadersPath.end()) {
+                std::cout << "Before path: " << shaderPath << "\n";
+                shadersPath.insert(shaderPath);
+                shaders.push_back(Shader(shaderPath));
+            }
+        }
     }
 }
