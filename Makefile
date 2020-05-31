@@ -26,6 +26,7 @@ export BUILD_CFLAGS BUILD_CXXFLAGS INCLUDE_DIR SHELL CC AR CXX AR OBJCOPY
 link_libraries := -lSDL2 -ldl
 build-dirs     := src resources
 final-builtin  := $(objtree)/built-in.a
+bin-name 	   := $(bintree)/main
 
 
 PHONY += $(build-dirs) $(final-builtin)
@@ -39,12 +40,14 @@ __all: build
 	
 PHONY += build run clean
 
-build: $(final-builtin)
-	$(shell mkdir -p $(bintree))
-	$(CXX) $(link_libraries) -o $(bintree)/main $<
+build: $(bin-name)
 
-run: __all
-	@$(bintree)/main
+$(bin-name): $(final-builtin)
+	$(shell mkdir -p $(bintree))
+	$(CXX) $(link_libraries) -o $@ $<
+
+run: build
+	@$(bin-name)
 
 clean:
 	-rm -rf $(objtree)
