@@ -5,6 +5,7 @@
 
 #include <glad/glad.h>
 
+namespace ProcessingGL {
 class Shader {
   public:
     Shader(const std::string &shaderPath);
@@ -22,3 +23,4 @@ class Shader {
   private:
     void checkError(unsigned shader, std::string type);
 };
+}

@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include <shader.hpp>
 
+namespace ProcessingGL {
 class Engine {
   public:
     Engine();
@@ -37,3 +38,4 @@ class Engine {
 
     unsigned vbo, vao;
 };
+}

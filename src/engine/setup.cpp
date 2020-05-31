@@ -1,5 +1,7 @@
 #include <engine.hpp>
 
+using namespace ProcessingGL;
+
 void Engine::setup() {
     // 0-2: pos
     // 2-5: color

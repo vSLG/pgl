@@ -1,5 +1,7 @@
 #include <engine.hpp>
 
+using namespace ProcessingGL;
+
 void Engine::update() {
     background(100, 100, 100);
 

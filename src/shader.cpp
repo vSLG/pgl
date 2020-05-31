@@ -6,6 +6,8 @@
 
 #include <shader.hpp>
 
+using namespace ProcessingGL;
+
 const std::set<std::string> Shader::supportedShaderExt = {"frag", "vert"};
 
 Shader::Shader(const std::string &shaderPath) {
