@@ -11,6 +11,9 @@ Shader::Shader(const std::string &shaderPath) {
     unsigned shaderTypes[] = {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER};
     id                     = glCreateProgram();
 
+    if (id == 0)
+        throw std::runtime_error("Failed to create shader program.");
+
     for (unsigned type : shaderTypes) {
         const char *  shaderCode;
         std::ifstream shaderFile;
@@ -31,22 +34,29 @@ Shader::Shader(const std::string &shaderPath) {
         shaderStream << shaderFile.rdbuf();
         shaderFile.close();
 
-        shaderCode = shaderStream.str().c_str();
+        std::string shaderString = shaderStream.str();
+        shaderCode               = shaderString.c_str();
         /* } catch (std::ifstream::failure &e) {
             // TODO
         } */
 
+        // printf("--------------------------------------------\ntype: %x\n%s\n", type, shaderCode);
+
         unsigned shader = glCreateShader(type);
+        if (shader == 0)
+            throw std::runtime_error("Failed to create shader.");
+
         glShaderSource(shader, 1, &shaderCode, NULL);
         glCompileShader(shader);
         checkError(id, "shader");
 
         glAttachShader(id, shader);
-        glLinkProgram(id);
-        checkError(id, "link");
 
         glDeleteShader(shader);
     }
+
+    glLinkProgram(id);
+    checkError(id, "program");
 }
 
 Shader::~Shader() {
@@ -70,8 +80,8 @@ void Shader::setFloat(const std::string &name, float value) const {
 }
 
 void Shader::checkError(unsigned shader, const std::string type) {
-    int  success;
-    char log[1024];
+    GLint  success;
+    GLchar log[1024];
 
     if (type != "program") {
         glGetShaderiv(shader, GL_COMPILE_STATUS, &success);

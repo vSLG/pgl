@@ -5,7 +5,7 @@ int main(int argc, char **argv) {
     std::cout << "Hello world!\n";
 
     int      width          = 600;
-    int      height         = 400;
+    int      height         = 600;
     unsigned lastFrameCount = 0;
 
     Engine *engine = new Engine();
