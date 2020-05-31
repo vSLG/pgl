@@ -27,7 +27,7 @@ class Engine {
     void checkSDL();
     void loadAllShaders(const std::string &dir);
     void setup();
-    void die(const std::string &message);
+    void die(const std::string &message, bool _stop);
 
     SDL_Window *          window;
     SDL_GLContext         glContext;

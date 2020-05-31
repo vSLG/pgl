@@ -1,9 +1,10 @@
-#include <shader.hpp>
-
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <vector>
+
+#include <shader.hpp>
 
 const std::set<std::string> Shader::supportedShaderExt = {"frag", "vert"};
 
@@ -48,7 +49,7 @@ Shader::Shader(const std::string &shaderPath) {
 
         glShaderSource(shader, 1, &shaderCode, NULL);
         glCompileShader(shader);
-        checkError(id, "shader");
+        checkError(shader, "shader");
 
         glAttachShader(id, shader);
 
@@ -80,23 +81,34 @@ void Shader::setFloat(const std::string &name, float value) const {
 }
 
 void Shader::checkError(unsigned shader, const std::string type) {
-    GLint  success;
-    GLchar log[1024];
+    GLint               success;
+    std::vector<GLchar> errorLog;
 
     if (type != "program") {
         glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-        if (!success)
-            glGetShaderInfoLog(shader, 1024, NULL, log);
+        if (success != GL_TRUE) {
+            GLint maxLen = 0;
+            glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLen);
+
+            errorLog.resize(maxLen);
+            glGetShaderInfoLog(shader, maxLen, &maxLen, &errorLog[0]);
+        }
     } else {
-        glGetProgramiv(shader, GL_COMPILE_STATUS, &success);
-        if (!success)
-            glGetProgramInfoLog(shader, 1024, NULL, log);
+        glGetProgramiv(shader, GL_LINK_STATUS, &success);
+        if (success != GL_TRUE) {
+            GLint maxLen = 0;
+            glGetProgramiv(shader, GL_INFO_LOG_LENGTH, &maxLen);
+
+            errorLog.resize(maxLen);
+            glGetProgramInfoLog(shader, maxLen, &maxLen, &errorLog[0]);
+        }
     }
 
-    if (!success) {
-        std::cout << "ERROR::COMPILATION_ERROR of type: " << type << "\n"
-                  << log << "\n -- --------------------------------------------------- -- "
-                  << std::endl;
+    if (success != GL_TRUE) {
+        std::cout << "ERROR::COMPILATION_ERROR of type: " << type << "\n";
+        for (GLchar i : errorLog)
+            std::cout << i;
+        std::cout << " -- --------------------------------------------------- -- " << std::endl;
 
         throw std::runtime_error("Shader compilation error.");
     }

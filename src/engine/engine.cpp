@@ -23,7 +23,7 @@ Engine::~Engine() {
 
 void Engine::checkSDL() {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
-        die("SDL_VIDEO initialization failed.");
+        die("SDL_VIDEO initialization failed.", false);
 }
 
 void Engine::initInternals(int w, int h) {
@@ -36,10 +36,11 @@ void Engine::initInternals(int w, int h) {
 
     glContext = SDL_GL_CreateContext(window);
 
-    gladLoadGLLoader((GLADloadproc) SDL_GL_GetProcAddress);
+    if (!gladLoadGLLoader((GLADloadproc) SDL_GL_GetProcAddress))
+        die("Could not initalize OpenGL.", false);
 
     if (!(window && glContext))
-        die("Could not initialize window or OpenGL context.");
+        die("Could not initialize window or OpenGL context.", false);
 
     printf("%s\n", glGetString(GL_VERSION));
 
@@ -111,7 +112,8 @@ void Engine::loadAllShaders(const std::string &dir) {
     }
 }
 
-void Engine::die(const std::string &message) {
-    stop();
+void Engine::die(const std::string &message, bool _stop = false) {
+    if (_stop)
+        stop();
     throw std::runtime_error(message);
 }
