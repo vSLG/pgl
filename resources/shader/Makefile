@@ -1,0 +1,1 @@
+res += $(patsubst $(dir)/%,%,$(wildcard $(dir)/*.*))

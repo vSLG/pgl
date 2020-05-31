@@ -1,2 +1,6 @@
 build := -f $(srctree)/scripts/Makefile.build.sub dir
 real-prereqs = $(filter-out $(PHONY), $^)
+
+sym-names = $(foreach type,size start end,\
+	$(shell echo -n $(addsuffix _$(type),$(addprefix _binary_,$(real-prereqs))) |\
+			tr -c '[^A-Za-z0-9 ]' _))

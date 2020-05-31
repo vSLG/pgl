@@ -44,7 +44,7 @@ void Engine::initInternals(int w, int h) {
 
     printf("%s\n", glGetString(GL_VERSION));
 
-    loadAllShaders(std::getenv("srctree") + std::string("/src/shader"));
+    loadAllShaders(std::getenv("srctree") + std::string("/resources/shader"));
 
     setup();
     isRunning = true;
