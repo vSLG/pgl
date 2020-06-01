@@ -55,9 +55,6 @@ $(objdir)/%.o: $(dir)/%.cpp
 
 $(res-o): $(res)
 	$(LD) -r -b binary -o $@ $(real-prereqs)
-	@$(OBJCOPY) \
-		$(addprefix --redefine-sym ,\
-			$(foreach s,$(sym-names),$(s)=$(subst _binary,,$(s)))) $@
 
 # Needed by $(builtin-target)
 $(objdir)/%/built-in.a: $(dir)/% ;

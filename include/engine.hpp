@@ -26,7 +26,7 @@ class Engine {
 
   private:
     void checkSDL();
-    void loadAllShaders(const std::string &dir);
+    void loadAllShaders();
     void setup();
     void die(const std::string &message, bool _stop);
 

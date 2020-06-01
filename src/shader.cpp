@@ -4,48 +4,24 @@
 #include <stdexcept>
 #include <vector>
 
+#include <resource/manager.hpp>
 #include <shader.hpp>
 
 using namespace ProcessingGL;
 
-const std::set<std::string> Shader::supportedShaderExt = {"frag", "vert"};
-
-Shader::Shader(const std::string &shaderPath) {
+Shader::Shader(ShaderName name) {
     unsigned shaderTypes[] = {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER};
     id                     = glCreateProgram();
 
     if (id == 0)
         throw std::runtime_error("Failed to create shader program.");
 
-    for (unsigned type : shaderTypes) {
-        const char *  shaderCode;
-        std::ifstream shaderFile;
+    for (int type = 0; type < TYPE_N; type++) {
+        const char *shaderCode;
+        std::string code = Resources::getShaderCode(name, (ShaderType) type);
+        shaderCode       = code.c_str();
 
-        shaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-        // try {
-        std::stringstream shaderStream;
-
-        switch (type) {
-            case GL_FRAGMENT_SHADER:
-                shaderFile.open(std::string(shaderPath) + ".frag");
-                break;
-            case GL_VERTEX_SHADER:
-                shaderFile.open(std::string(shaderPath) + ".vert");
-                break;
-        }
-
-        shaderStream << shaderFile.rdbuf();
-        shaderFile.close();
-
-        std::string shaderString = shaderStream.str();
-        shaderCode               = shaderString.c_str();
-        /* } catch (std::ifstream::failure &e) {
-            // TODO
-        } */
-
-        // printf("--------------------------------------------\ntype: %x\n%s\n", type, shaderCode);
-
-        unsigned shader = glCreateShader(type);
+        unsigned shader = glCreateShader(shaderTypes[type]);
         if (shader == 0)
             throw std::runtime_error("Failed to create shader.");
 

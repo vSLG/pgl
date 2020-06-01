@@ -8,7 +8,9 @@
 namespace ProcessingGL {
 class Shader {
   public:
-    Shader(const std::string &shaderPath);
+    enum ShaderName { simple, NAME_N };
+    enum ShaderType { vert, frag, TYPE_N };
+    Shader(ShaderName name);
     ~Shader();
 
     unsigned id;
@@ -23,4 +25,4 @@ class Shader {
   private:
     void checkError(unsigned shader, std::string type);
 };
-}
+} // namespace ProcessingGL

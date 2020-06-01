@@ -1,11 +1,16 @@
 #include <iostream>
 
 #include <engine.hpp>
+#include <resource/manager.hpp>
 
 using namespace ProcessingGL;
 
 int main(int argc, char **argv) {
     std::cout << "Hello world!\n";
+
+    Resources::initResources();
+    /* std::cout << Resources::getShaderCode(Shader::simple, Shader::vert);
+    std::cout << Resources::getShaderCode(Shader::simple, Shader::vert); */
 
     int      width          = 600;
     int      height         = 600;

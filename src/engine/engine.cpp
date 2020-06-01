@@ -46,8 +46,7 @@ void Engine::initInternals(int w, int h) {
 
     printf("%s\n", glGetString(GL_VERSION));
 
-    loadAllShaders(std::getenv("srctree") + std::string("/resources/shader"));
-
+    loadAllShaders();
     setup();
     isRunning = true;
 }
@@ -98,20 +97,8 @@ unsigned Engine::frameCount() {
     return _frameCount;
 }
 
-void Engine::loadAllShaders(const std::string &dir) {
-    std::set<std::string> shadersPath;
-    for (const auto &entry : fs::directory_iterator(dir)) {
-        std::vector<std::string> pathParts = Utils::split(entry.path(), '.');
-
-        if (Shader::supportedShaderExt.find(pathParts.back()) != Shader::supportedShaderExt.end()) {
-            pathParts.pop_back();
-            std::string shaderPath = Utils::join(pathParts, '.');
-            if (shadersPath.find(shaderPath) == shadersPath.end()) {
-                shadersPath.insert(shaderPath);
-                shaders.push_back(new Shader(shaderPath));
-            }
-        }
-    }
+void Engine::loadAllShaders() {
+    shaders.push_back(new Shader(Shader::simple));
 }
 
 void Engine::die(const std::string &message, bool _stop = false) {
