@@ -22,7 +22,7 @@
 DEFINE_SHADER_RESOURCE(simple, vert);
 DEFINE_SHADER_RESOURCE(simple, frag);
 
-namespace ProcessingGL::Resources {
+namespace pgl::res {
 
 std::vector<ResourceData> _resources[RESOURCE_N];
 
@@ -34,4 +34,4 @@ void initResources() {
 std::string getShaderCode(Shader::ShaderName name, Shader::ShaderType type) {
     return _resources[RESOURCE_SHADER].at(name * Shader::TYPE_N + type).getData();
 }
-}; // namespace ProcessingGL::Resources
+}; // namespace pgl::res

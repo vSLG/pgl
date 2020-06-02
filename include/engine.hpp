@@ -5,7 +5,7 @@
 #include <SDL2/SDL.h>
 #include <shader.hpp>
 
-namespace ProcessingGL {
+namespace pgl {
 class Engine {
   public:
     Engine();

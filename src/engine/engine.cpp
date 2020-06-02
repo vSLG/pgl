@@ -10,7 +10,7 @@
 
 namespace fs = std::filesystem;
 
-using namespace ProcessingGL;
+using namespace pgl;
 
 Engine::Engine() {
     checkSDL();

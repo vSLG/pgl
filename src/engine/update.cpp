@@ -1,6 +1,6 @@
 #include <engine.hpp>
 
-using namespace ProcessingGL;
+using namespace pgl;
 
 void Engine::update() {
     background(100, 100, 100);

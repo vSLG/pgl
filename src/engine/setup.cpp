@@ -1,6 +1,6 @@
 #include <engine.hpp>
 
-using namespace ProcessingGL;
+using namespace pgl;
 
 void Engine::setup() {
     // 0-2: pos

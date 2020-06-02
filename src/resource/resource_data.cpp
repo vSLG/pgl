@@ -2,7 +2,7 @@
 
 #include <resource/resource_data.hpp>
 
-namespace ProcessingGL::Resources {
+namespace pgl::res {
 ResourceData::ResourceData(char *start, char *end) {
     _start = start;
     _end   = end;
@@ -19,4 +19,4 @@ std::string ResourceData::getData() {
 int ResourceData::size() {
     return _size;
 }
-}; // namespace ProcessingGL::Resources
+}; // namespace pgl::res

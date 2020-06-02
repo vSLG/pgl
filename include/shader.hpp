@@ -5,7 +5,7 @@
 
 #include <glad/glad.h>
 
-namespace ProcessingGL {
+namespace pgl {
 class Shader {
   public:
     enum ShaderName { simple, NAME_N };
@@ -25,4 +25,4 @@ class Shader {
   private:
     void checkError(unsigned shader, std::string type);
 };
-} // namespace ProcessingGL
+} // namespace pgl

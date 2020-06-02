@@ -1,6 +1,6 @@
 #include <util.hpp>
 
-namespace ProcessingGL::Utils {
+namespace pgl::Utils {
 std::vector<std::string> split(const std::string &str, char delimeter) {
     std::vector<std::string> parts;
     std::string              part;
@@ -23,4 +23,4 @@ std::string join(const std::vector<std::string> &vec, char splitter) {
 
     return sstr.str();
 }
-} // namespace ProcessingGL::Utils
+} // namespace pgl::Utils

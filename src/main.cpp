@@ -3,12 +3,12 @@
 #include <engine.hpp>
 #include <resource/manager.hpp>
 
-using namespace ProcessingGL;
+using namespace pgl;
 
 int main(int argc, char **argv) {
     std::cout << "Hello world!\n";
 
-    Resources::initResources();
+    res::initResources();
     /* std::cout << Resources::getShaderCode(Shader::simple, Shader::vert);
     std::cout << Resources::getShaderCode(Shader::simple, Shader::vert); */
 

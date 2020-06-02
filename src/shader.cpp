@@ -7,7 +7,7 @@
 #include <resource/manager.hpp>
 #include <shader.hpp>
 
-using namespace ProcessingGL;
+using namespace pgl;
 
 Shader::Shader(ShaderName name) {
     unsigned shaderTypes[] = {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER};
@@ -18,7 +18,7 @@ Shader::Shader(ShaderName name) {
 
     for (int type = 0; type < TYPE_N; type++) {
         const char *shaderCode;
-        std::string code = Resources::getShaderCode(name, (ShaderType) type);
+        std::string code = res::getShaderCode(name, (ShaderType) type);
         shaderCode       = code.c_str();
 
         unsigned shader = glCreateShader(shaderTypes[type]);

@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace ProcessingGL::Resources {
+namespace pgl::res {
 class ResourceData {
   public:
     ResourceData(char *start, char *end);
@@ -15,4 +15,4 @@ class ResourceData {
     char *_start;
     int   _size;
 };
-} // namespace ProcessingGL::Resources
+} // namespace pgl::res
