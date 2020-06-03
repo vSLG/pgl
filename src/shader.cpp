@@ -69,7 +69,8 @@ void Shader::setFloat(const std::string &name, float value) const {
 }
 
 void Shader::setMat4(const std::string &name, const glm::mat4 &mat) const {
-    glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+    glUniformMatrix4fv(
+        glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 
 void Shader::checkError(unsigned shader, const std::string type) {
@@ -100,7 +101,9 @@ void Shader::checkError(unsigned shader, const std::string type) {
         std::cout << "ERROR::COMPILATION_ERROR of type: " << type << "\n";
         for (GLchar i : errorLog)
             std::cout << i;
-        std::cout << " -- --------------------------------------------------- -- " << std::endl;
+        std::cout
+            << " -- --------------------------------------------------- -- "
+            << std::endl;
 
         throw std::runtime_error("Shader compilation error.");
     }
