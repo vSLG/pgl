@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SDL2/SDL.h>
 #include <glm/glm.hpp>
 
 namespace pgl {
@@ -11,6 +12,10 @@ class Camera {
 
     glm::mat4 view();
 
+    float yaw;
+    float pitch;
+    float sensitivity;
+
     glm::vec3 pos;
     glm::vec3 target;
     glm::mat4 projection;
@@ -20,5 +25,10 @@ class Camera {
     glm::vec3 up;
 
     glm::vec3 worldUp;
+
+    void mouseMotion(SDL_MouseMotionEvent e);
+
+  private:
+    void update();
 };
 }; // namespace pgl

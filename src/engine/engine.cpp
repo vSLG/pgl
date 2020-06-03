@@ -1,14 +1,10 @@
-#include <filesystem>
 #include <iostream>
-#include <set>
 #include <stdexcept>
 
 #include <engine.hpp>
 #include <util.hpp>
 
 #include <glad/glad.h>
-
-namespace fs = std::filesystem;
 
 using namespace pgl;
 
@@ -54,6 +50,7 @@ void Engine::initInternals(int w, int h) {
 
     printf("%s\n", glGetString(GL_VERSION));
 
+    SDL_SetRelativeMouseMode(SDL_TRUE);
     setup();
     isRunning = true;
 }
@@ -77,14 +74,16 @@ void Engine::draw() {
 void Engine::handleEvents() {
     SDL_Event e;
 
-    SDL_PollEvent(&e);
-
-    switch (e.type) {
-        case SDL_QUIT:
-            isRunning = false;
-            break;
-        default:
-            break;
+    while (SDL_PollEvent(&e)) {
+        switch (e.type) {
+            case SDL_QUIT:
+                isRunning = false;
+                break;
+            case SDL_MOUSEMOTION:
+                camera->mouseMotion(e.motion);
+            default:
+                break;
+        }
     }
 }
 

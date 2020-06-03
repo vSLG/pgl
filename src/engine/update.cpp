@@ -10,10 +10,8 @@ void Engine::update() {
     tempShader->use();
 
     glm::mat4 model(1.0f);
-
-    camera->pos = glm::vec3(sin(glm::radians((float) _frameCount)) * 2.0f,
-                            0.0f,
-                            cos(glm::radians((float) _frameCount)) * 2.0f);
+    /* model = glm::rotate(
+        model, glm::radians(_frameCount / 10.0f), glm::vec3(0., 0., 1.)); */
 
     tempShader->setMat4("projection", camera->projection);
     tempShader->setMat4("view", camera->view());
