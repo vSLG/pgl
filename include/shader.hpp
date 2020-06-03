@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glm/glm.hpp>
 #include <set>
 #include <string>
 
@@ -8,19 +9,22 @@
 namespace pgl {
 class Shader {
   public:
-    enum ShaderName { simple, NAME_N };
+    enum ShaderName { simple, spacial, NAME_N };
     enum ShaderType { vert, frag, TYPE_N };
     Shader(ShaderName name);
+    Shader();
     ~Shader();
 
-    unsigned id;
+    unsigned              id;
+    static const unsigned glShaders[];
 
     void use();
+    void addShader(ShaderName name, ShaderType type);
+    void linkProgram();
     void setBool(const std::string &name, bool value) const;
     void setInt(const std::string &name, int value) const;
     void setFloat(const std::string &name, float value) const;
-
-    static const std::set<std::string> supportedShaderExt;
+    void setMat4(const std::string &name, const glm::mat4 &mat) const;
 
   private:
     void checkError(unsigned shader, std::string type);

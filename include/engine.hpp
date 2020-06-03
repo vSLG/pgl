@@ -1,8 +1,10 @@
 #pragma once
 
+#include <SDL2/SDL.h>
+#include <string>
 #include <vector>
 
-#include <SDL2/SDL.h>
+#include <camera.hpp>
 #include <shader.hpp>
 
 namespace pgl {
@@ -26,16 +28,15 @@ class Engine {
 
   private:
     void checkSDL();
-    void loadAllShaders();
     void setup();
     void die(const std::string &message, bool _stop);
 
-    SDL_Window *          window;
-    SDL_GLContext         glContext;
-    bool                  isRunning;
-    unsigned              _frameCount;
-    std::vector<Shader *> shaders;
-
-    unsigned vbo, vao;
+    SDL_Window *  window;
+    SDL_GLContext glContext;
+    bool          isRunning;
+    unsigned      _frameCount, width, height;
+    Camera *      camera;
+    Shader *      tempShader;
+    unsigned      tempVao;
 };
-}
+} // namespace pgl

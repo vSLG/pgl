@@ -1,3 +1,5 @@
+#include <glm/gtc/matrix_transform.hpp>
+
 #include <engine.hpp>
 
 using namespace pgl;
@@ -25,10 +27,12 @@ void Engine::setup() {
                         0.0f,
                         1.0f};
 
-    glGenVertexArrays(1, &vao);
+    unsigned vbo;
+
+    glGenVertexArrays(1, &tempVao);
     glGenBuffers(1, &vbo);
 
-    glBindVertexArray(vao);
+    glBindVertexArray(tempVao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
     // Load vertex + color data to buffer
@@ -42,4 +46,11 @@ void Engine::setup() {
     glVertexAttribPointer(
         1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *) (sizeof(float) * 3));
     glEnableVertexAttribArray(1);
+
+    tempShader = new Shader();
+    tempShader->addShader(Shader::spacial, Shader::vert);
+    tempShader->addShader(Shader::simple, Shader::frag);
+    tempShader->linkProgram();
+
+    camera = new Camera(glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }

@@ -9,37 +9,47 @@
 
 using namespace pgl;
 
+const unsigned Shader::glShaders[] = {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER};
+
 Shader::Shader(ShaderName name) {
-    unsigned shaderTypes[] = {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER};
-    id                     = glCreateProgram();
+    id = glCreateProgram();
 
     if (id == 0)
         throw std::runtime_error("Failed to create shader program.");
 
-    for (int type = 0; type < TYPE_N; type++) {
-        const char *shaderCode;
-        std::string code = res::getShaderCode(name, (ShaderType) type);
-        shaderCode       = code.c_str();
+    for (int type = 0; type < TYPE_N; type++)
+        addShader(name, (ShaderType) type);
 
-        unsigned shader = glCreateShader(shaderTypes[type]);
-        if (shader == 0)
-            throw std::runtime_error("Failed to create shader.");
+    linkProgram();
+}
 
-        glShaderSource(shader, 1, &shaderCode, NULL);
-        glCompileShader(shader);
-        checkError(shader, "shader");
-
-        glAttachShader(id, shader);
-
-        glDeleteShader(shader);
-    }
-
-    glLinkProgram(id);
-    checkError(id, "program");
+Shader::Shader() {
+    id = glCreateProgram();
 }
 
 Shader::~Shader() {
     glDeleteProgram(id);
+}
+
+void Shader::addShader(ShaderName name, ShaderType type) {
+    const char *shaderCode;
+    std::string shaderResource = res::getShaderCode(name, type);
+    shaderCode                 = shaderResource.c_str();
+
+    unsigned shader = glCreateShader(glShaders[type]);
+    if (shader == 0)
+        throw std::runtime_error("Failed to create shader.");
+
+    glShaderSource(shader, 1, &shaderCode, NULL);
+    glCompileShader(shader);
+    checkError(shader, "shader");
+
+    glAttachShader(id, shader);
+}
+
+void Shader::linkProgram() {
+    glLinkProgram(id);
+    checkError(id, "program");
 }
 
 void Shader::use() {
@@ -56,6 +66,10 @@ void Shader::setInt(const std::string &name, int value) const {
 
 void Shader::setFloat(const std::string &name, float value) const {
     glUniform1f(glGetUniformLocation(id, name.c_str()), value);
+}
+
+void Shader::setMat4(const std::string &name, const glm::mat4 &mat) const {
+    glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 
 void Shader::checkError(unsigned shader, const std::string type) {

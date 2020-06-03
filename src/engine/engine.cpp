@@ -44,9 +44,11 @@ void Engine::initInternals(int w, int h) {
     if (!(window && glContext))
         die("Could not initialize window or OpenGL context.", false);
 
+    width  = w;
+    height = h;
+
     printf("%s\n", glGetString(GL_VERSION));
 
-    loadAllShaders();
     setup();
     isRunning = true;
 }
@@ -57,14 +59,6 @@ void Engine::background(int r, int g, int b) {
 }
 
 void Engine::stop() {
-    // TODO
-    glDeleteVertexArrays(1, &vao);
-    glDeleteBuffers(1, &vbo);
-
-    // Cleaning shaders
-    for (Shader *e : shaders)
-        glDeleteProgram(e->id);
-
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);
     SDL_Quit();
@@ -95,10 +89,6 @@ bool Engine::running() {
 
 unsigned Engine::frameCount() {
     return _frameCount;
-}
-
-void Engine::loadAllShaders() {
-    shaders.push_back(new Shader(Shader::simple));
 }
 
 void Engine::die(const std::string &message, bool _stop = false) {
