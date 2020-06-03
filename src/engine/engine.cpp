@@ -80,11 +80,14 @@ void Engine::handleEvents() {
                 isRunning = false;
                 break;
             case SDL_MOUSEMOTION:
-                camera->mouseMotion(e.motion);
+                camera->mouseMotion(&e.motion);
+                break;
+            case SDL_KEYDOWN:
             default:
                 break;
         }
     }
+    camera->keyboardInput(SDL_GetKeyboardState(NULL), deltaTime);
 }
 
 bool Engine::running() {

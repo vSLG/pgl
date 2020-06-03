@@ -11,10 +11,14 @@ class Camera {
            glm::vec3 upWorld  = glm::vec3(0.0f, 1.0f, 0.0f));
 
     glm::mat4 view();
+    void      mouseMotion(SDL_MouseMotionEvent *e);
+    void      keyboardInput(const uint8_t *e, float deltaTime);
 
     float yaw;
     float pitch;
     float sensitivity;
+    float speed;
+    float zoom;
 
     glm::vec3 pos;
     glm::vec3 target;
@@ -25,8 +29,6 @@ class Camera {
     glm::vec3 up;
 
     glm::vec3 worldUp;
-
-    void mouseMotion(SDL_MouseMotionEvent e);
 
   private:
     void update();

@@ -13,6 +13,8 @@ class Engine {
     Engine();
     ~Engine();
 
+    float deltaTime;
+
     bool running();
 
     unsigned frameCount();
