@@ -2,11 +2,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <camera.hpp>
+#include <util.hpp>
 
 using namespace pgl;
 
 Camera::Camera(glm::vec2 resolution, glm::vec3 position, glm::vec3 upWorld)
     : yaw(90.0f), pitch(0.0f), sensitivity(0.1f), speed(1.0f), zoom(75.0f) {
+    debug("(Camera) Creating camera object");
+
     pos        = position;
     worldUp    = upWorld;
     projection = glm::perspective(

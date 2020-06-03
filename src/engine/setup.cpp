@@ -1,10 +1,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <engine.hpp>
+#include <util.hpp>
 
 using namespace pgl;
 
 void Engine::setup() {
+    debug("(Engine) Starting setup.");
     // 0-2: pos
     // 2-5: color
     // Total of 3 positions and 3 colors.

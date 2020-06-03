@@ -1,3 +1,4 @@
+#include <SDL2/SDL_log.h>
 #include <iostream>
 #include <vector>
 
@@ -31,12 +32,16 @@ namespace pgl::res {
 std::vector<ResourceData> _resources[RESOURCE_N];
 
 void initResources() {
+    debug("(Resources) Initializing resources.");
     CREATE_SHADER_RESOURCE(simple, vert);
     CREATE_SHADER_RESOURCE(simple, frag);
     CREATE_SHADER_RESOURCE(spacial, vert);
 }
 
 std::string getShaderCode(Shader::ShaderName name, Shader::ShaderType type) {
+    debug("(Resources) Getting shader code: _resources[%u][%u].",
+          RESOURCE_SHADER,
+          name * Shader::TYPE_N + type);
     return _resources[RESOURCE_SHADER]
         .at(name * Shader::TYPE_N + type)
         .getData();

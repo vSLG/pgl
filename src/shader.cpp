@@ -1,17 +1,17 @@
-#include <fstream>
 #include <iostream>
-#include <sstream>
 #include <stdexcept>
-#include <vector>
 
 #include <resource/manager.hpp>
 #include <shader.hpp>
+#include <util.hpp>
 
 using namespace pgl;
 
 const unsigned Shader::glShaders[] = {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER};
 
 Shader::Shader(ShaderName name) {
+    debug("(Shader) Creating named Shader object: %u.", name);
+
     id = glCreateProgram();
 
     if (id == 0)
@@ -24,6 +24,7 @@ Shader::Shader(ShaderName name) {
 }
 
 Shader::Shader() {
+    debug("(Shader) Creating blank Shader object.");
     id = glCreateProgram();
 }
 
@@ -32,6 +33,12 @@ Shader::~Shader() {
 }
 
 void Shader::addShader(ShaderName name, ShaderType type) {
+    debug("(Shader) "
+          "Adding shader source (%u) of type %u to program %u.",
+          name,
+          type,
+          id);
+
     const char *shaderCode;
     std::string shaderResource = res::getShaderCode(name, type);
     shaderCode                 = shaderResource.c_str();
@@ -48,6 +55,8 @@ void Shader::addShader(ShaderName name, ShaderType type) {
 }
 
 void Shader::linkProgram() {
+    debug("(Shader) Linking shader program %u.", id);
+
     glLinkProgram(id);
     checkError(id, "program");
 }
@@ -74,6 +83,9 @@ void Shader::setMat4(const std::string &name, const glm::mat4 &mat) const {
 }
 
 void Shader::checkError(unsigned shader, const std::string type) {
+    debug_assert("(Shader) Checking compiling/linking errors for: %s.",
+                 type.c_str());
+
     GLint               success;
     std::vector<GLchar> errorLog;
 
@@ -98,12 +110,16 @@ void Shader::checkError(unsigned shader, const std::string type) {
     }
 
     if (success != GL_TRUE) {
-        std::cout << "ERROR::COMPILATION_ERROR of type: " << type << "\n";
+        std::stringstream logStream;
         for (GLchar i : errorLog)
-            std::cout << i;
-        std::cout
-            << " -- --------------------------------------------------- -- "
-            << std::endl;
+            logStream << i;
+
+        error_assert("(Shader) -- "
+                     "--------------------------------------------------- --");
+        error_assert("(Shader) COMPILATION_ERROR of type: %s.", type.c_str());
+        error_assert("(Shader) %s", logStream.str().c_str());
+        error_assert("(Shader) -- "
+                     "--------------------------------------------------- --");
 
         throw std::runtime_error("Shader compilation error.");
     }

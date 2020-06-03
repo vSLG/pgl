@@ -2,11 +2,12 @@
 
 #include <engine.hpp>
 #include <resource/manager.hpp>
+#include <util.hpp>
 
 using namespace pgl;
 
 int main(int argc, char **argv) {
-    std::cout << "Hello world!\n";
+    SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
 
     res::initResources();
 
@@ -20,6 +21,8 @@ int main(int argc, char **argv) {
 
     uint64_t now = SDL_GetPerformanceCounter();
     uint64_t last;
+
+    debug("(main) Starting main loop.");
     while (engine->running()) {
         last = now;
         now  = SDL_GetPerformanceCounter();
@@ -27,7 +30,9 @@ int main(int argc, char **argv) {
             (now - last) / (float) SDL_GetPerformanceFrequency();
 
         if (deltaCounter >= 1.0f) {
-            printf("FPS: %u; delta: %f\r", lastFrameCount, engine->deltaTime);
+            debug("(main) FPS: %u; delta: %f\r",
+                  lastFrameCount,
+                  engine->deltaTime);
             fflush(stdout);
             lastFrameCount = 0;
             deltaCounter   = 0;
@@ -40,6 +45,8 @@ int main(int argc, char **argv) {
         deltaCounter += engine->deltaTime;
         lastFrameCount++;
     }
+
+    debug("(main) Exited main loop.");
 
     engine->stop();
 
