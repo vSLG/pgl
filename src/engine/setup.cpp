@@ -57,6 +57,7 @@ void Engine::setup() {
     tempShader->addShader(Shader::simple, Shader::frag);
     tempShader->linkProgram();
 
-    camera =
-        new Camera(glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    camera = new Camera(glm::vec2(width, height),
+                        glm::vec3(0.0f, 0.0f, -1.0f),
+                        glm::vec3(0.0f, 1.0f, 0.0f));
 }

@@ -9,18 +9,14 @@ void Engine::update() {
     background(100, 100, 100);
     tempShader->use();
 
-    glm::mat4 projection = glm::perspective(
-        glm::radians(45.0f), (float) width / (float) height, 0.1f, 100.0f);
     glm::mat4 model(1.0f);
-    glm::mat4 view(1.0f);
 
     camera->pos = glm::vec3(sin(glm::radians((float) _frameCount)) * 2.0f,
                             0.0f,
                             cos(glm::radians((float) _frameCount)) * 2.0f);
-    view        = camera->view();
 
-    tempShader->setMat4("projection", projection);
-    tempShader->setMat4("view", view);
+    tempShader->setMat4("projection", camera->projection);
+    tempShader->setMat4("view", camera->view());
     tempShader->setMat4("model", model);
 
     glBindVertexArray(tempVao);
