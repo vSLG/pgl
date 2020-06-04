@@ -5,6 +5,7 @@
 
 using namespace pgl;
 
+// This function should be used for updating scene objects.
 void Engine::update() {
     background(100, 100, 100);
     tempShader->use();
@@ -13,10 +14,12 @@ void Engine::update() {
     /* model = glm::rotate(
         model, glm::radians(_frameCount / 10.0f), glm::vec3(0., 0., 1.)); */
 
+    // Let the shaders do the matrix product.
     tempShader->setMat4("projection", camera->projection);
     tempShader->setMat4("view", camera->view());
     tempShader->setMat4("model", model);
 
+    // And draw our simple colorful triangle.
     glBindVertexArray(tempVao);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }

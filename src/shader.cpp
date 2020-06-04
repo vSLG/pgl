@@ -5,10 +5,23 @@
 #include <shader.hpp>
 #include <util.hpp>
 
+/*
+ * This class is used to create a shader program. It supports multiple different
+ * shaders. The shaders are loaded from the binary embedded resources, and
+ * defined by enum in shader.hpp.
+ * We can create a shader in 2 ways:
+ *   1. An empty Shader object: we can specify any shader we want manually and
+ *      link the program when ready.
+ *   2. A named Shader object: specify a shader set and the constructor will
+ *      load and link shaders from specified set automatically.
+ */
+
 using namespace pgl;
 
+// Used to get OpenGL shader type.
 const unsigned Shader::glShaders[] = {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER};
 
+// Named Shader constructor
 Shader::Shader(ShaderName name) {
     debug("(Shader) Creating named Shader object: %u.", name);
 
@@ -23,6 +36,7 @@ Shader::Shader(ShaderName name) {
     linkProgram();
 }
 
+// Empty Shader constructor.
 Shader::Shader() {
     debug("(Shader) Creating blank Shader object.");
     id = glCreateProgram();
@@ -32,6 +46,8 @@ Shader::~Shader() {
     glDeleteProgram(id);
 }
 
+// Attatch specified shader to shader program. Shaders are loaded from
+// resources.
 void Shader::addShader(ShaderName name, ShaderType type) {
     debug("(Shader) "
           "Adding shader source (%u) of type %u to program %u.",
@@ -61,6 +77,7 @@ void Shader::linkProgram() {
     checkError(id, "program");
 }
 
+// Intended to be used on the pgl::Engine::update() function.
 void Shader::use() {
     glUseProgram(id);
 }

@@ -11,10 +11,9 @@ int main(int argc, char **argv) {
 
     res::initResources();
 
-    int      width          = 600;
-    int      height         = 600;
-    unsigned lastFrameCount = 0;
-    float    deltaCounter   = 0.0f;
+    int   width        = 600;
+    int   height       = 600;
+    float deltaCounter = 0.0f;
 
     Engine *engine = new Engine();
     engine->initInternals(width, height);
@@ -28,22 +27,18 @@ int main(int argc, char **argv) {
         now  = SDL_GetPerformanceCounter();
         engine->deltaTime =
             (now - last) / (float) SDL_GetPerformanceFrequency();
+        deltaCounter += engine->deltaTime;
 
-        if (deltaCounter >= 1.0f) {
-            debug("(main) FPS: %u; delta: %f\r",
-                  lastFrameCount,
+        if (deltaCounter >= 0.5f) {
+            debug("(main) FPS: %0.2f; delta: %f\r",
+                  1.0f / engine->deltaTime,
                   engine->deltaTime);
-            fflush(stdout);
-            lastFrameCount = 0;
-            deltaCounter   = 0;
+            deltaCounter = 0;
         }
 
         engine->handleEvents();
         engine->update();
         engine->draw();
-
-        deltaCounter += engine->deltaTime;
-        lastFrameCount++;
     }
 
     debug("(main) Exited main loop.");

@@ -1,5 +1,8 @@
 #include <util.hpp>
 
+// This file is to be deleted, since we are not using any function from here
+// anywhere.
+
 namespace pgl::Utils {
 std::vector<std::string> split(const std::string &str, char delimeter) {
     std::vector<std::string> parts;

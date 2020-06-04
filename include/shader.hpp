@@ -21,6 +21,8 @@ class Shader {
     void use();
     void addShader(ShaderName name, ShaderType type);
     void linkProgram();
+
+    // Set uniforms specified in shader sources.
     void setBool(const std::string &name, bool value) const;
     void setInt(const std::string &name, int value) const;
     void setFloat(const std::string &name, float value) const;

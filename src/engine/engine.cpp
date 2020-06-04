@@ -25,8 +25,12 @@ void Engine::checkSDL() {
         die("SDL_VIDEO initialization failed.", false);
 }
 
+// Initalize everything we need to get a running OpenGL SDL window.
 void Engine::initInternals(int w, int h) {
     debug("(Engine) Creating window object.");
+
+    // Create SDL window. The last param, we specify flags for certain window
+    // features, e.g. it should be resizeable, or full screen, etc.
     window = SDL_CreateWindow("Engine",
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
@@ -34,6 +38,8 @@ void Engine::initInternals(int w, int h) {
                               h,
                               SDL_WINDOW_OPENGL);
 
+    // Specify OpenGL version to SDL (really useful?), and tell that we want to
+    // use core profile from OpenGL.
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
@@ -42,6 +48,8 @@ void Engine::initInternals(int w, int h) {
     debug("(Engine) Creating OpenGL context.");
     glContext = SDL_GL_CreateContext(window);
 
+    // Load OpenGL functions with GLAD, since OpenGL functions are defined at
+    // runtime.
     debug("(Engine) Loading OpenGL functions.");
     if (!gladLoadGLLoader((GLADloadproc) SDL_GL_GetProcAddress))
         die("Could not initalize OpenGL.", false);
@@ -56,19 +64,23 @@ void Engine::initInternals(int w, int h) {
 
     debug("(Engine) Used OpenGL version: %s", glGetString(GL_VERSION));
 
+    // Capture mouse inside the window.
     SDL_SetRelativeMouseMode(SDL_TRUE);
+
     setup();
     isRunning = true;
 }
 
+// Abstraction for setting background color.
 void Engine::background(int r, int g, int b) {
     glClearColor(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT); // We may want to clear depth buffer later.
 }
 
 void Engine::stop() {
     debug("(Engine) Stopping engine.");
 
+    // Free memory, do not leak.
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);
     SDL_Quit();
@@ -82,6 +94,8 @@ void Engine::draw() {
 void Engine::handleEvents() {
     SDL_Event e;
 
+    // Using while loop is important. Events accumulate in a queue, and if we
+    // treat one of them each frame, we delay other events.
     while (SDL_PollEvent(&e)) {
         switch (e.type) {
             case SDL_QUIT:
@@ -91,12 +105,16 @@ void Engine::handleEvents() {
             case SDL_MOUSEMOTION:
                 camera->mouseMotion(&e.motion);
                 break;
-            case SDL_KEYDOWN:
             default:
                 break;
         }
     }
 
+    // Treat keyboard events without polling event. Since polling a keyboard
+    // event gives us a normal OS keyboard events, we do not have smooth
+    // movement. So treat keyboard events as key states.
+    // This call must be performed after polling events, else key states will
+    // not be available.
     camera->keyboardInput(SDL_GetKeyboardState(NULL), deltaTime);
 }
 

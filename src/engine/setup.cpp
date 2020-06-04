@@ -5,6 +5,8 @@
 
 using namespace pgl;
 
+// This function should be used for defining scene objects and setting up
+// everything that will be used on render calls, e.g. camera and shaders.
 void Engine::setup() {
     debug("(Engine) Starting setup.");
     // 0-2: pos
@@ -43,7 +45,7 @@ void Engine::setup() {
     // How to get position data from the array
     glVertexAttribPointer(
         0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *) 0);
-    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(0); // (layout = 0), for vertex shader.
 
     // How to get color data
     glVertexAttribPointer(1,
@@ -52,7 +54,7 @@ void Engine::setup() {
                           GL_FALSE,
                           6 * sizeof(float),
                           (void *) (sizeof(float) * 3));
-    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(1); // (layout = 1), for vertex shader.
 
     tempShader = new Shader();
     tempShader->addShader(Shader::spacial, Shader::vert);

@@ -38,7 +38,10 @@ class Engine {
     bool          isRunning;
     unsigned      _frameCount, width, height;
     Camera *      camera;
-    Shader *      tempShader;
-    unsigned      tempVao;
+
+    // Temporary variables that will be useless after implementing drawable
+    // objects.
+    Shader * tempShader;
+    unsigned tempVao;
 };
 } // namespace pgl
