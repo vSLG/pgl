@@ -11,15 +11,21 @@ namespace pgl {
 // responds to keyboard and mouse events.
 class Camera {
   public:
-    Camera(glm::vec2 resolution,
+    enum Projection { PROJECTION_PERSPECTIVE, PROJECTION_ORTHOGRAPHIC };
+
+    Camera(int       width,
+           int       height,
            glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
            glm::vec3 upWorld  = glm::vec3(0.0f, 1.0f, 0.0f));
 
     glm::mat4 view();
+    void      setProjection(Projection proj = PROJECTION_ORTHOGRAPHIC);
+    void      setResolution(int width, int height);
 
     // Callbacks for user events.
     void mouseMotion(SDL_MouseMotionEvent *e);
     void keyboardInput(const uint8_t *e, float deltaTime);
+    void toggleProjection();
 
     // Euler angles, used to calculate the direction of the camera.
     float yaw;
@@ -28,7 +34,7 @@ class Camera {
     // Defined camera options.
     float sensitivity;
     float speed;
-    float zoom;
+    float fov;
 
     glm::vec3 pos;
     glm::mat4 projection; // Can be either perspective or orthogonal.
@@ -42,6 +48,9 @@ class Camera {
     glm::vec3 worldUp;
 
   private:
+    int        w, h;
+    Projection _currentProjection;
+
     // Used to update camera vectors based on Euler angles and position. It must
     // be called whenever one of those or both changes.
     void update();

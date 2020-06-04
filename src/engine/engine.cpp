@@ -66,9 +66,6 @@ void Engine::initInternals(int w, int h) {
 
     debug("(Engine) Used OpenGL version: %s", glGetString(GL_VERSION));
 
-    // Capture mouse inside the window.
-    SDL_SetRelativeMouseMode(SDL_TRUE);
-
     setup();
     isRunning = true;
 }
@@ -103,6 +100,10 @@ void Engine::handleEvents() {
             case SDL_QUIT:
                 debug("(Engine) Quit request received.");
                 isRunning = false;
+                break;
+            case SDL_KEYDOWN:
+                if (e.key.keysym.sym == SDLK_t)
+                    camera->toggleProjection();
                 break;
             case SDL_MOUSEMOTION:
                 camera->mouseMotion(&e.motion);

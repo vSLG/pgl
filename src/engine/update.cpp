@@ -13,6 +13,8 @@ void Engine::update() {
     tempShader->use();
 
     glm::mat4 model(1.0f);
+    model = glm::translate(model, glm::vec3(width / 2.f, height / 2.f, 0.f));
+    model = glm::scale(model, glm::vec3(400.f, 400.f, 100.f));
     /* model = glm::rotate(
         model, glm::radians(_frameCount / 10.0f), glm::vec3(0., 0., 1.)); */
 

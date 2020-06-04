@@ -8,18 +8,17 @@
 
 using namespace pgl;
 
-Camera::Camera(glm::vec2 resolution, glm::vec3 position, glm::vec3 upWorld)
+Camera::Camera(int width, int height, glm::vec3 position, glm::vec3 upWorld)
     : // Initalize camera options with default predefined values.
-      // TODO: make those optional.
-      yaw(90.0f), pitch(0.0f), sensitivity(0.1f), speed(1.0f), zoom(75.0f) {
+      yaw(-90.f), pitch(0.0f), sensitivity(0.1f), speed(100.f), fov(45.0f) {
     debug("(Camera) Creating camera object");
 
     pos     = position;
     worldUp = upWorld;
+    w       = width;
+    h       = height;
 
-    // Also let projection be optional.
-    projection = glm::perspective(
-        glm::radians(zoom), resolution[0] / resolution[1], 0.1f, 100.0f);
+    setProjection(PROJECTION_ORTHOGRAPHIC);
 
     // Start camera vectors since we just filled in with position and world up
     // vector.
@@ -32,13 +31,43 @@ glm::mat4 Camera::view() {
     return glm::lookAt(pos, front + pos, up);
 }
 
+void Camera::setProjection(Projection proj) {
+    _currentProjection = proj;
+
+    switch (proj) {
+        case PROJECTION_PERSPECTIVE:
+            // Capture mouse inside the window.
+            SDL_SetRelativeMouseMode(SDL_TRUE);
+            projection = glm::perspective(
+                glm::radians(fov), (float) w / (float) h, 0.1f, 1000.0f);
+            break;
+        case PROJECTION_ORTHOGRAPHIC:
+            // Free mouse from the window.
+            SDL_SetRelativeMouseMode(SDL_FALSE);
+            projection =
+                glm::ortho(0.f, (float) w, 0.f, (float) h, 0.f, 1000.f);
+            break;
+    }
+}
+
+void Camera::setResolution(int width, int height) {
+    w = width;
+    h = height;
+
+    setProjection(_currentProjection);
+}
+
 void Camera::mouseMotion(SDL_MouseMotionEvent *e) {
+    // Block mouse movement if in orthographic mode.
+    if (_currentProjection == PROJECTION_ORTHOGRAPHIC)
+        return;
+
     // Euler angles can be used to calculate the camera direction vector.
     yaw += e->xrel * sensitivity;
     pitch -= e->yrel * sensitivity;
 
     // Don't go above 90° or below -90°, else weird things will happen.
-    pitch = std::clamp(pitch, -89.0f, 89.0f);
+    pitch = std::clamp(pitch, -89.9f, 89.9f);
 
     update();
 }
@@ -61,9 +90,14 @@ void Camera::keyboardInput(const uint8_t *e, float deltaTime) {
     if (e[SDL_SCANCODE_SPACE])
         result += glm::vec3(0., 1., 0.);
 
-    // Delta time must be used here, else the camera will move differently on
-    // other devices. Delta time makes movement uniform on every platform.
+    // Delta time must be used here, else the camera will move differently
+    // on other devices. Delta time makes movement uniform on every
+    // platform.
     pos += result * speed * deltaTime;
+}
+
+void Camera::toggleProjection() {
+    setProjection((Projection)((_currentProjection + 1) % 2));
 }
 
 void Camera::update() {
