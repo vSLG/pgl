@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+
 #include <SDL2/SDL_log.h>
 #include <iostream>
 #include <vector>

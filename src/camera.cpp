@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+
 #include <algorithm>
 #include <glm/gtc/matrix_transform.hpp>
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+
 #include <sstream>
 
 #include <resource/resource_data.hpp>

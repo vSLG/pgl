@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+
 #version 400 core
 
 out vec4 fragColor;

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+
 #include <util.hpp>
 
 // This file is to be deleted, since we are not using any function from here
