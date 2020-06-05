@@ -18,7 +18,7 @@ Camera::Camera(int width, int height, glm::vec3 position, glm::vec3 upWorld)
     w       = width;
     h       = height;
 
-    setProjection(PROJECTION_ORTHOGRAPHIC);
+    projection(PROJECTION_ORTHOGRAPHIC);
 
     // Start camera vectors since we just filled in with position and world up
     // vector.
@@ -31,21 +31,25 @@ glm::mat4 Camera::view() {
     return glm::lookAt(pos, front + pos, up);
 }
 
-void Camera::setProjection(Projection proj) {
-    _currentProjection = proj;
+glm::mat4 Camera::projection() {
+    return projection_;
+}
+
+void Camera::projection(Projection proj) {
+    currentProjection = proj;
 
     switch (proj) {
         case PROJECTION_PERSPECTIVE:
             // Capture mouse inside the window.
             SDL_SetRelativeMouseMode(SDL_TRUE);
-            projection = glm::perspective(
+            projection_ = glm::perspective(
                 glm::radians(fov), (float) w / (float) h, 0.1f, 1000.0f);
             break;
         case PROJECTION_ORTHOGRAPHIC:
             // Free mouse from the window.
             SDL_SetRelativeMouseMode(SDL_FALSE);
-            projection =
-                glm::ortho(0.f, (float) w, 0.f, (float) h, 0.f, 1000.f);
+            projection_ =
+                glm::ortho(-w / 2.f, w / 2.f, -h / 2.f, h / 2.f, 0.f, 1000.f);
             break;
     }
 }
@@ -54,12 +58,12 @@ void Camera::setResolution(int width, int height) {
     w = width;
     h = height;
 
-    setProjection(_currentProjection);
+    projection(currentProjection);
 }
 
 void Camera::mouseMotion(SDL_MouseMotionEvent *e) {
     // Block mouse movement if in orthographic mode.
-    if (_currentProjection == PROJECTION_ORTHOGRAPHIC)
+    if (currentProjection == PROJECTION_ORTHOGRAPHIC)
         return;
 
     // Euler angles can be used to calculate the camera direction vector.
@@ -97,7 +101,7 @@ void Camera::keyboardInput(const uint8_t *e, float deltaTime) {
 }
 
 void Camera::toggleProjection() {
-    setProjection((Projection)((_currentProjection + 1) % 2));
+    projection((Projection)((currentProjection + 1) % 2));
 }
 
 void Camera::update() {

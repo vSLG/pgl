@@ -15,6 +15,6 @@ void Engine::update() {
         // Test funny transformations
         item->setSize(sin(deltaCounter * 2) * 400, cos(deltaCounter * 2) * 400);
         item->rotate(deltaCounter * 2);
-        item->draw(camera->projection, camera->view());
+        item->draw(camera->projection(), camera->view());
     }
 }

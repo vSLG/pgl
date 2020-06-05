@@ -17,6 +17,6 @@ void Engine::setup() {
 
     camera = new Camera(width,
                         height,
-                        glm::vec3(0.f, 0.f, 500.0f),
+                        glm::vec3(width / 2.f, height / 2.f, 500.0f),
                         glm::vec3(0.0f, 1.0f, 0.0f));
 }

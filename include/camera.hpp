@@ -19,7 +19,8 @@ class Camera {
            glm::vec3 upWorld  = glm::vec3(0.0f, 1.0f, 0.0f));
 
     glm::mat4 view();
-    void      setProjection(Projection proj = PROJECTION_ORTHOGRAPHIC);
+    glm::mat4 projection();
+    void      projection(Projection proj);
     void      setResolution(int width, int height);
 
     // Callbacks for user events.
@@ -37,7 +38,6 @@ class Camera {
     float fov;
 
     glm::vec3 pos;
-    glm::mat4 projection; // Can be either perspective or orthogonal.
 
     // Camera axis
     glm::vec3 front;
@@ -49,7 +49,8 @@ class Camera {
 
   private:
     int        w, h;
-    Projection _currentProjection;
+    Projection currentProjection;
+    glm::mat4  projection_; // Can be either perspective or orthogonal.
 
     // Used to update camera vectors based on Euler angles and position. It must
     // be called whenever one of those or both changes.
