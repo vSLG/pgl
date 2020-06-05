@@ -17,8 +17,13 @@ struct ColoredVertex {
                   float R = 0.f,
                   float G = 0.f,
                   float B = 0.f,
-                  float A = 0.f)
+                  float A = 1.f)
         : x(X), y(Y), z(Z), r(R), g(G), b(B), a(A) {
+    }
+
+    ColoredVertex(glm::vec2 pos) : ColoredVertex(pos[0], pos[1]) {
+    }
+    ColoredVertex(glm::vec3 pos) : ColoredVertex(pos[0], pos[1], pos[2]) {
     }
     float x, y, z, r, g, b, a;
 };
@@ -32,10 +37,12 @@ class Drawable {
     Drawable(glm::vec3 position, glm::vec3 shapeSize);
     Drawable(glm::vec2 position, glm::vec2 shapeSize);
     Drawable(int x, int y, int w, int h);
+    Drawable();
     ~Drawable();
 
     void update();
     void buffersReady();
+    void normalizeVertices();
 
     Shader *                   shader;
     glm::mat4                  model;

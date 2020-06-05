@@ -12,8 +12,8 @@ using namespace pgl;
 void Engine::setup() {
     debug("(Engine) Starting setup.");
 
-    sceneObjs.push_back(
-        new drawable::Triangle(width / 2.f, height / 2.f, 400, 400));
+    sceneObjs.push_back(new drawable::Triangle(
+        100, 100, (width) -100, 100, width / 2, height - 100));
 
     camera = new Camera(width,
                         height,

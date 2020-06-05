@@ -22,6 +22,11 @@ Drawable::Drawable(int x, int y, int w, int h)
     : Drawable(glm::vec3(x, y, 0.f), glm::vec3(w, h, 0.f)) {
 }
 
+Drawable::Drawable() {
+    glGenVertexArrays(1, &vao);
+    glGenBuffers(1, &vbo);
+}
+
 Drawable::~Drawable() {
     glDeleteBuffers(1, &vbo);
     glDeleteVertexArrays(1, &vao);
@@ -71,6 +76,33 @@ void Drawable::buffersReady() {
                           (void *) (3 * sizeof(float)));
 
     glEnableVertexAttribArray(1); // (layout = 1) in the vertex shader.
+}
+
+// Transform shape in vertices vector to a (0, 0) → (1, 1) space.
+void Drawable::normalizeVertices() {
+    ColoredVertex min = vertices.front();
+    ColoredVertex max = vertices.front();
+
+    for (ColoredVertex v : vertices) {
+        if (v.x > max.x)
+            max.x = v.x;
+        else if (v.x < min.x)
+            min.x = v.x;
+        if (v.y > max.y)
+            max.y = v.y;
+        else if (v.y < min.y)
+            min.y = v.y;
+    }
+
+    for (unsigned long i = 0; i < vertices.size(); i++) {
+        vertices[i].x -= min.x;
+        vertices[i].x /= max.x - min.x;
+        vertices[i].y -= min.y;
+        vertices[i].y /= max.y - min.y;
+    }
+
+    pos = {min.x, min.y, 0.f};
+    setSize(max.x - min.x, max.y - min.y);
 }
 
 void Drawable::draw(glm::mat4 projection, glm::mat4 view) {

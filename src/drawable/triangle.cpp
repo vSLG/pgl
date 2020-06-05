@@ -1,23 +1,25 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
+#include <glm/gtx/string_cast.hpp>
+
 #include <drawable/triangle.hpp>
 
 #include <util.hpp>
 
 using namespace pgl::drawable;
 
-Triangle::Triangle(glm::vec3 position, glm::vec3 shapeSize)
-    : Drawable(position, shapeSize) {
-    debug("(%s) Creating drawable object at (%.2f, %.2f, %.2f).",
+Triangle::Triangle(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3) {
+    debug("(%s) Creating drawable object at %s, %s, %s",
           __name(),
-          pos[0],
-          pos[1],
-          pos[2]);
+          glm::to_string(p1).c_str(),
+          glm::to_string(p2).c_str(),
+          glm::to_string(p3).c_str());
 
-    // Simple equilateral triangle for now
-    vertices.push_back(ColoredVertex(0.5f, -0.5f, 0.f, 1.f));
-    vertices.push_back(ColoredVertex(-0.5f, -0.5f, 0.f, 0.f, 1.f));
-    vertices.push_back(ColoredVertex(0.f, 0.5f, 0.f, 0.f, 0.f, 1.f));
+    vertices.push_back(ColoredVertex(p1));
+    vertices.push_back(ColoredVertex(p2));
+    vertices.push_back(ColoredVertex(p3));
+
+    normalizeVertices();
 
     buffersReady();
     drawMode = GL_TRIANGLES;
@@ -28,10 +30,6 @@ Triangle::Triangle(glm::vec3 position, glm::vec3 shapeSize)
     shader->linkProgram();
 }
 
-Triangle::Triangle(glm::vec2 position, glm::vec2 shapeSize)
-    : Triangle(glm::vec3(position, 0.f), glm::vec3(shapeSize, 0.f)) {
-}
-
-Triangle::Triangle(int x, int y, int w, int h)
-    : Triangle(glm::vec3(x, y, 0.f), glm::vec3(w, h, 0.f)) {
+Triangle::Triangle(int x1, int y1, int x2, int y2, int x3, int y3)
+    : Triangle(glm::vec2(x1, y1), glm::vec2(x2, y2), glm::vec2(x3, y3)) {
 }

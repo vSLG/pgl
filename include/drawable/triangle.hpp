@@ -7,9 +7,8 @@
 namespace pgl::drawable {
 class Triangle : public Drawable {
   public:
-    Triangle(glm::vec3 position, glm::vec3 shapeSize);
-    Triangle(glm::vec2 position, glm::vec2 shapeSize);
-    Triangle(int x, int y, int w, int h);
+    Triangle(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3);
+    Triangle(int x1, int y1, int x2, int y2, int x3, int y3);
 
   private:
     const char *__name() {
