@@ -10,20 +10,11 @@ using namespace pgl;
 // This function should be used for updating scene objects.
 void Engine::update() {
     background(100, 100, 100);
-    tempShader->use();
 
-    glm::mat4 model(1.0f);
-    model = glm::translate(model, glm::vec3(width / 2.f, height / 2.f, 0.f));
-    model = glm::scale(model, glm::vec3(400.f, 400.f, 100.f));
-    /* model = glm::rotate(
-        model, glm::radians(_frameCount / 10.0f), glm::vec3(0., 0., 1.)); */
-
-    // Let the shaders do the matrix product.
-    tempShader->setMat4("projection", camera->projection);
-    tempShader->setMat4("view", camera->view());
-    tempShader->setMat4("model", model);
-
-    // And draw our simple colorful triangle.
-    glBindVertexArray(tempVao);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    for (drawable::Drawable *item : sceneObjs) {
+        // Test funny transformations
+        item->setSize(sin(deltaCounter * 2) * 400, cos(deltaCounter * 2) * 400);
+        item->rotate(deltaCounter * 2);
+        item->draw(camera->projection, camera->view());
+    }
 }

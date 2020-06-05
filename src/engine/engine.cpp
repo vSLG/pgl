@@ -13,8 +13,8 @@ using namespace pgl;
 Engine::Engine() {
     checkSDL();
 
-    isRunning   = false;
-    _frameCount = 0;
+    isRunning    = false;
+    deltaCounter = 0.f;
 }
 
 Engine::~Engine() {
@@ -87,7 +87,7 @@ void Engine::stop() {
 
 void Engine::draw() {
     SDL_GL_SwapWindow(window);
-    _frameCount++;
+    deltaCounter += deltaTime;
 }
 
 void Engine::handleEvents() {
@@ -123,10 +123,6 @@ void Engine::handleEvents() {
 
 bool Engine::running() {
     return isRunning;
-}
-
-unsigned Engine::frameCount() {
-    return _frameCount;
 }
 
 void Engine::die(const std::string &message, bool _stop = false) {

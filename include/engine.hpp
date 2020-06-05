@@ -7,6 +7,7 @@
 #include <vector>
 
 #include <camera.hpp>
+#include <drawable.hpp>
 #include <shader.hpp>
 
 namespace pgl {
@@ -18,8 +19,6 @@ class Engine {
     float deltaTime;
 
     bool running();
-
-    unsigned frameCount();
 
     void initInternals(int w, int h);
 
@@ -35,15 +34,12 @@ class Engine {
     void setup();
     void die(const std::string &message, bool _stop);
 
-    SDL_Window *  window;
-    SDL_GLContext glContext;
-    bool          isRunning;
-    unsigned      _frameCount, width, height;
-    Camera *      camera;
-
-    // Temporary variables that will be useless after implementing drawable
-    // objects.
-    Shader * tempShader;
-    unsigned tempVao;
+    SDL_Window *                      window;
+    SDL_GLContext                     glContext;
+    bool                              isRunning;
+    unsigned                          width, height;
+    float                             deltaCounter;
+    Camera *                          camera;
+    std::vector<drawable::Drawable *> sceneObjs;
 };
 } // namespace pgl
