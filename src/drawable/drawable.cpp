@@ -1,16 +1,21 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
+#include <cmath>
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 
 #include <drawable.hpp>
 #include <util.hpp>
 
 using namespace pgl::drawable;
 
-Drawable::Drawable(glm::vec3 position, glm::vec3 shapeSize)
-    : pos(position), size(shapeSize) {
+Drawable::Drawable(glm::vec3 position, glm::vec3 shapeSize) {
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
+
+    size(shapeSize);
+    pos(position);
+
     update();
 }
 
@@ -22,6 +27,7 @@ Drawable::Drawable(int x, int y, int w, int h)
     : Drawable(glm::vec3(x, y, 0.f), glm::vec3(w, h, 0.f)) {
 }
 
+// Must call update() manually!
 Drawable::Drawable() {
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
@@ -37,9 +43,9 @@ void Drawable::update() {
     model = glm::mat4(1.f);
 
     // Always scale, rotate and translate in this order (read order is reverse).
-    model = glm::translate(model, pos);
+    model = glm::translate(model, pos_);
     model = glm::rotate(model, rotation, rotationDirection);
-    model = glm::scale(model, size);
+    model = glm::scale(model, size_);
 }
 
 // This function should be called after setting the vertices vector.
@@ -101,8 +107,8 @@ void Drawable::normalizeVertices() {
         vertices[i].y /= max.y - min.y;
     }
 
-    pos = {min.x, min.y, 0.f};
-    setSize(max.x - min.x, max.y - min.y);
+    pos_ = {min.x, min.y, 0.f};
+    size(max.x - min.x, max.y - min.y);
 }
 
 void Drawable::draw(glm::mat4 projection, glm::mat4 view) {
@@ -120,15 +126,36 @@ void Drawable::rotate(float radians) {
     update();
 }
 
-void Drawable::setSize(glm::vec3 newSize) {
-    size = newSize;
+void Drawable::size(glm::vec3 newSize) {
+    size_ = newSize;
     update();
 }
 
-void Drawable::setSize(glm::vec2 newSize) {
-    setSize(glm::vec3(newSize, 0.f));
+void Drawable::size(glm::vec2 newSize) {
+    size(glm::vec3(newSize, size_.z));
 }
 
-void Drawable::setSize(int w, int h) {
-    setSize(glm::vec3(w, h, 0.f));
+void Drawable::size(int w, int h) {
+    size(glm::vec3(w, h, size_.z));
+}
+
+glm::vec3 Drawable::size() {
+    return size_;
+}
+
+void Drawable::pos(glm::vec3 newPos) {
+    pos_ = newPos;
+    update();
+}
+
+void Drawable::pos(glm::vec2 newPos) {
+    pos(glm::vec3(newPos, pos_.z));
+}
+
+void Drawable::pos(int x, int y) {
+    pos(glm::vec3(x, y, pos_.z));
+}
+
+glm::vec3 Drawable::pos() {
+    return pos_;
 }

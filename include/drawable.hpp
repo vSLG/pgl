@@ -25,7 +25,12 @@ struct ColoredVertex {
     }
     ColoredVertex(glm::vec3 pos) : ColoredVertex(pos[0], pos[1], pos[2]) {
     }
+
     float x, y, z, r, g, b, a;
+
+    glm::vec2 xy() {
+        return glm::vec2(x, y);
+    }
 };
 
 /*
@@ -40,9 +45,9 @@ class Drawable {
     Drawable();
     ~Drawable();
 
-    void update();
-    void buffersReady();
-    void normalizeVertices();
+    virtual void update();
+    virtual void buffersReady();
+    virtual void normalizeVertices();
 
     Shader *                   shader;
     glm::mat4                  model;
@@ -51,6 +56,9 @@ class Drawable {
     unsigned vao, vbo;
     unsigned drawMode;
 
+    glm::vec3 pos_;
+    glm::vec3 size_;
+
     float     rotation          = 0.f;
     glm::vec3 rotationDirection = glm::vec3(0.f, 0.f, 1.f);
 
@@ -58,19 +66,22 @@ class Drawable {
 
   public:
     // This will be called each loop by the engine.
-    void draw(glm::mat4 projection, glm::mat4 view);
+    virtual void draw(glm::mat4 projection, glm::mat4 view);
 
     // Use radians and rotate around the Z axis by default.
-    void rotate(float radians);
+    virtual void rotate(float radians);
 
-    void setSize(glm::vec3 newSize);
-    void setSize(glm::vec2 newSize);
-    void setSize(int w, int h);
+    virtual void      size(glm::vec3 newSize);
+    virtual void      size(glm::vec2 newSize);
+    virtual void      size(int w, int h);
+    virtual glm::vec3 size();
 
-    glm::vec3 pos;
-    glm::vec3 size;
+    virtual void      pos(glm::vec3 newPos);
+    virtual void      pos(glm::vec2 newPos);
+    virtual void      pos(int x, int y);
+    virtual glm::vec3 pos();
 };
 }; // namespace pgl::drawable
 
 // Included shapes.
-#include <drawable/triangle.hpp>
+#include <drawable/polygon.hpp>

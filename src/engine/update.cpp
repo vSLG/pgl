@@ -13,8 +13,12 @@ void Engine::update() {
 
     for (drawable::Drawable *item : sceneObjs) {
         // Test funny transformations
-        // item->setSize(sin(deltaCounter * 2) * 400, cos(deltaCounter * 2) *
-        // 400); item->rotate(deltaCounter * 2);
+        item->size(tan(deltaCounter * 2) * width / 2.f + width / 2.f,
+                   tan(deltaCounter * 2) * height / 2.f + height / 2.f);
+        item->pos(glm::vec3(tan(deltaCounter * 2) * width / 2.f + width / 2.f,
+                            sin(deltaCounter * 2) * height / 2.f + height / 2.f,
+                            0.f));
+        item->rotate(tan(deltaCounter * 2 + 2 * M_PI / 3));
         item->draw(camera->projection(), camera->view());
     }
 }

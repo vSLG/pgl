@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 #include <glm/gtx/string_cast.hpp>
+#include <iostream>
 
 #include <drawable/triangle.hpp>
 
