@@ -15,6 +15,8 @@ void Engine::setup() {
     sceneObjs.push_back(new drawable::Triangle(
         100, 100, (width) -100, 100, width / 2, height - 100));
 
+    sceneObjs.push_back(new drawable::Circle(100, 100, 25));
+
     camera = new Camera(width,
                         height,
                         glm::vec3(width / 2.f, height / 2.f, 500.0f),

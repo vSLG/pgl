@@ -18,4 +18,6 @@ class Polygon : public Drawable {
 };
 } // namespace pgl::drawable
 
+// Include polygons
+#include <drawable/cricle.hpp>
 #include <drawable/triangle.hpp>
