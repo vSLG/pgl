@@ -16,7 +16,7 @@ Circle::Circle(glm::vec2 position, float radius) {
 
     vertices.push_back(ColoredVertex(.5f, .5f));
 
-    for (float i = 0.f; i < 2 * M_PI; i += glm::radians(5.f)) {
+    for (float i = 0.f; i <= 2 * M_PI; i += glm::radians(10.f)) {
         vertices.push_back(ColoredVertex(cos(i) / 2 + .5f, sin(i) / 2 + .5f));
     }
 

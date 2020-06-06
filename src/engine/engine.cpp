@@ -102,8 +102,27 @@ void Engine::handleEvents() {
                 isRunning = false;
                 break;
             case SDL_KEYDOWN:
-                if (e.key.keysym.sym == SDLK_t)
-                    camera->toggleProjection();
+                switch (e.key.keysym.sym) {
+                    case SDLK_ESCAPE:
+                        debug("(Engine) Quit request received.");
+                        isRunning = false;
+                        break;
+                    case SDLK_r:
+                        reset();
+                        break;
+                    case SDLK_q:
+                        toggleWireframe();
+                        break;
+                    case SDLK_t:
+                        camera->toggleProjection();
+                        break;
+                    case SDLK_EQUALS:
+                        camera->addZoom();
+                        break;
+                    case SDLK_MINUS:
+                        camera->removeZoom();
+                        break;
+                }
                 break;
             case SDL_MOUSEMOTION:
                 camera->mouseMotion(&e.motion);
@@ -130,4 +149,18 @@ void Engine::die(const std::string &message, bool _stop = false) {
         stop();
     error("(Engine) %s", message.c_str());
     throw std::runtime_error(message);
+}
+
+void Engine::toggleWireframe() {
+    wireframe = !wireframe;
+    glPolygonMode(GL_FRONT_AND_BACK, wireframe ? GL_LINE : GL_FILL);
+}
+
+void Engine::reset() {
+    delete camera;
+    wireframe = false;
+    for (drawable::Drawable *obj : sceneObjs)
+        delete obj;
+    sceneObjs.clear();
+    setup();
 }

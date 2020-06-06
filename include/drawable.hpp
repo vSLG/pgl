@@ -39,11 +39,7 @@ struct ColoredVertex {
  */
 class Drawable {
   protected:
-    Drawable(glm::vec3 position, glm::vec3 shapeSize);
-    Drawable(glm::vec2 position, glm::vec2 shapeSize);
-    Drawable(int x, int y, int w, int h);
     Drawable();
-    ~Drawable();
 
     virtual void update();
     virtual void buffersReady();
@@ -65,6 +61,8 @@ class Drawable {
     virtual const char *__name() = 0;
 
   public:
+    virtual ~Drawable();
+
     // This will be called each loop by the engine.
     virtual void draw(glm::mat4 projection, glm::mat4 view);
 

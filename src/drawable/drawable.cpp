@@ -9,24 +9,6 @@
 
 using namespace pgl::drawable;
 
-Drawable::Drawable(glm::vec3 position, glm::vec3 shapeSize) {
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &vbo);
-
-    size(shapeSize);
-    pos(position);
-
-    update();
-}
-
-Drawable::Drawable(glm::vec2 position, glm::vec2 shapeSize)
-    : Drawable(glm::vec3(position, 0.f), glm::vec3(shapeSize, 0.f)) {
-}
-
-Drawable::Drawable(int x, int y, int w, int h)
-    : Drawable(glm::vec3(x, y, 0.f), glm::vec3(w, h, 0.f)) {
-}
-
 // Must call update() manually!
 Drawable::Drawable() {
     glGenVertexArrays(1, &vao);

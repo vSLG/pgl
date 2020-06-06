@@ -27,7 +27,9 @@ class Engine {
     void update();
     void draw();
     void stop();
+    void reset();
     void handleEvents();
+    void toggleWireframe();
 
   private:
     void checkSDL();
@@ -37,6 +39,7 @@ class Engine {
     SDL_Window *                      window;
     SDL_GLContext                     glContext;
     bool                              isRunning;
+    bool                              wireframe = false;
     unsigned                          width, height;
     float                             deltaCounter;
     Camera *                          camera;

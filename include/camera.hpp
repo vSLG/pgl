@@ -18,24 +18,41 @@ class Camera {
            glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
            glm::vec3 upWorld  = glm::vec3(0.0f, 1.0f, 0.0f));
 
-    glm::mat4 view();
-    glm::mat4 projection();
-    void      projection(Projection proj);
-    void      setResolution(int width, int height);
+    void setResolution(int width, int height);
+    void addZoom(float quant = .9f);
+    void removeZoom(float quant = .9f);
 
     // Callbacks for user events.
     void mouseMotion(SDL_MouseMotionEvent *e);
     void keyboardInput(const uint8_t *e, float deltaTime);
     void toggleProjection();
 
+    glm::mat4 view();
+    glm::mat4 projection();
+    void      projection(Projection proj);
+    float     zoom();
+    void      zoom(float zoom);
+    float     fov();
+    void      fov(float fov);
+    float     speed();
+    void      speed(float speed);
+    float     sensitivity();
+    void      sensitivity(float sensitivity);
+
+  private:
+    int        w, h;
+    Projection currentProjection;
+    glm::mat4  projection_; // Can be either perspective or orthogonal.
+
     // Euler angles, used to calculate the direction of the camera.
     float yaw;
     float pitch;
 
     // Defined camera options.
-    float sensitivity;
-    float speed;
-    float fov;
+    float sensitivity_;
+    float speed_;
+    float fov_;
+    float zoom_;
 
     glm::vec3 pos;
 
@@ -46,11 +63,6 @@ class Camera {
 
     // Needed for calculating the camera axis.
     glm::vec3 worldUp;
-
-  private:
-    int        w, h;
-    Projection currentProjection;
-    glm::mat4  projection_; // Can be either perspective or orthogonal.
 
     // Used to update camera vectors based on Euler angles and position. It must
     // be called whenever one of those or both changes.
