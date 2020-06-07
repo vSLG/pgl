@@ -37,7 +37,7 @@ void Drawable::buffersReady() {
 
     // Load vertices + colors to buffer.
     glBufferData(GL_ARRAY_BUFFER,
-                 vertices.size() * sizeof(ColoredVertex),
+                 vertices.size() * sizeof(Vertex),
                  &vertices[0],
                  GL_STATIC_DRAW);
 
@@ -50,28 +50,24 @@ void Drawable::buffersReady() {
      * data);
      * Pointer: 0.
      */
-    glVertexAttribPointer(
-        0, 3, GL_FLOAT, GL_FALSE, sizeof(ColoredVertex), (void *) 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) 0);
 
     glEnableVertexAttribArray(0); // (layout = 0) in the vertex shader.
 
     // Same as above, but now for colors.
-    glVertexAttribPointer(1,
-                          4,
-                          GL_FLOAT,
-                          GL_FALSE,
-                          sizeof(ColoredVertex),
-                          (void *) (3 * sizeof(float)));
+    /*  glVertexAttribPointer(
+         1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) (3 *
+     sizeof(float)));
 
-    glEnableVertexAttribArray(1); // (layout = 1) in the vertex shader.
+     glEnableVertexAttribArray(1); // (layout = 1) in the vertex shader. */
 }
 
 // Transform shape in vertices vector to a (0, 0) → (1, 1) space.
 void Drawable::normalizeVertices() {
-    ColoredVertex min = vertices.front();
-    ColoredVertex max = vertices.front();
+    Vertex min = vertices.front();
+    Vertex max = vertices.front();
 
-    for (ColoredVertex v : vertices) {
+    for (Vertex v : vertices) {
         if (v.x > max.x)
             max.x = v.x;
         else if (v.x < min.x)

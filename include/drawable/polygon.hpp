@@ -11,6 +11,7 @@ class Polygon : public Drawable {
     virtual void      update();
 
     virtual glm::vec3 pos();
+    virtual void      pos(glm::vec3 position);
     virtual bool      centered();
     virtual void      centered(bool centered);
 

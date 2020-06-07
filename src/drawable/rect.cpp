@@ -9,7 +9,7 @@ Rect::Rect(glm::vec2 position, glm::vec2 size)
            position + glm::vec2(0.f, size.y),
            position + size,
            position + glm::vec2(size.x, 0.f)) {
-    Drawable::pos(position - centroid());
+    Drawable::pos(position);
 }
 
 Rect::Rect(float x, float y, float width, float height)

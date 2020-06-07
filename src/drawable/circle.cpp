@@ -14,14 +14,14 @@ Circle::Circle(glm::vec2 position, float radius) {
           glm::to_string(position).c_str(),
           radius);
 
-    vertices.push_back(ColoredVertex(.5f, .5f));
+    vertices.push_back(Vertex(.5f, .5f));
 
     for (float i = 0.f; i <= 2 * M_PI; i += glm::radians(10.f)) {
-        vertices.push_back(ColoredVertex(cos(i) / 2 + .5f, sin(i) / 2 + .5f));
+        vertices.push_back(Vertex(cos(i) / 2 + .5f, sin(i) / 2 + .5f));
     }
 
     size(radius * 2, radius * 2);
-    Drawable::pos(position - radius);
+    Drawable::pos(position);
 
     buffersReady();
     drawMode = GL_TRIANGLE_FAN;

@@ -10,23 +10,16 @@
 namespace pgl::drawable {
 
 // Use this struct instead of grouping vertices in a large float array.
-struct ColoredVertex {
-    ColoredVertex(float X = 0.F,
-                  float Y = 0.F,
-                  float Z = 0.F,
-                  float R = 0.f,
-                  float G = 0.f,
-                  float B = 0.f,
-                  float A = 1.f)
-        : x(X), y(Y), z(Z), r(R), g(G), b(B), a(A) {
+struct Vertex {
+    Vertex(float X = 0.F, float Y = 0.F, float Z = 0.F) : x(X), y(Y), z(Z) {
     }
 
-    ColoredVertex(glm::vec2 pos) : ColoredVertex(pos[0], pos[1]) {
+    Vertex(glm::vec2 pos) : Vertex(pos[0], pos[1]) {
     }
-    ColoredVertex(glm::vec3 pos) : ColoredVertex(pos[0], pos[1], pos[2]) {
+    Vertex(glm::vec3 pos) : Vertex(pos[0], pos[1], pos[2]) {
     }
 
-    float x, y, z, r, g, b, a;
+    float x, y, z;
 
     glm::vec2 xy() {
         return glm::vec2(x, y);
@@ -45,9 +38,9 @@ class Drawable {
     virtual void buffersReady();
     virtual void normalizeVertices();
 
-    Shader *                   shader;
-    glm::mat4                  model;
-    std::vector<ColoredVertex> vertices;
+    Shader *            shader;
+    glm::mat4           model;
+    std::vector<Vertex> vertices;
 
     unsigned vao, vbo;
     unsigned drawMode;

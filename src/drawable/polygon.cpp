@@ -49,6 +49,11 @@ glm::vec3 Polygon::pos() {
     return pos_ + glm::vec3(centroid_, 0.f);
 }
 
+void Polygon::pos(glm::vec3 position) {
+    pos_ = position - glm::vec3(centroid_, 0.f);
+    update();
+}
+
 bool Polygon::centered() {
     return centered_;
 }

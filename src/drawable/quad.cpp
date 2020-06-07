@@ -20,10 +20,10 @@ Quad::Quad(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4) {
 
     glGenBuffers(1, &ebo);
 
-    vertices.push_back(ColoredVertex(p1));
-    vertices.push_back(ColoredVertex(p2));
-    vertices.push_back(ColoredVertex(p3));
-    vertices.push_back(ColoredVertex(p4));
+    vertices.push_back(Vertex(p1));
+    vertices.push_back(Vertex(p2));
+    vertices.push_back(Vertex(p3));
+    vertices.push_back(Vertex(p4));
 
     normalizeVertices();
 
