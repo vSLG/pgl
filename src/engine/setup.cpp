@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
+#include <iostream>
 
 #include <engine.hpp>
 #include <util.hpp>
@@ -15,7 +17,25 @@ void Engine::setup() {
     sceneObjs.push_back(new drawable::Triangle(
         100, 100, (width) -100, 100, width / 2, height - 100));
 
-    sceneObjs.push_back(new drawable::Circle(100, 100, 25));
+    sceneObjs.push_back(new drawable::Circle(100, 100, 50));
+
+    sceneObjs.push_back(new drawable::Quad(
+        width - 150, 50, width - 150, 150, width - 50, 150, width - 50, 50));
+
+    sceneObjs.push_back(
+        new drawable::Rect(width / 2.f, height - 100.f, 200.f, 100.f));
+
+    sceneObjs.push_back(new drawable::Quad(25,
+                                           height * 2 / 3,
+
+                                           width - 25,
+                                           height * 2 / 3,
+
+                                           width - 100,
+                                           height / 3,
+
+                                           100,
+                                           height / 3));
 
     camera = new Camera(width,
                         height,

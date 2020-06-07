@@ -21,7 +21,7 @@ Circle::Circle(glm::vec2 position, float radius) {
     }
 
     size(radius * 2, radius * 2);
-    Drawable::pos(position - glm::vec2(radius, radius));
+    Drawable::pos(position - radius);
 
     buffersReady();
     drawMode = GL_TRIANGLE_FAN;

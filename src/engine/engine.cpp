@@ -159,6 +159,7 @@ void Engine::toggleWireframe() {
 void Engine::reset() {
     delete camera;
     wireframe = false;
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     for (drawable::Drawable *obj : sceneObjs)
         delete obj;
     sceneObjs.clear();

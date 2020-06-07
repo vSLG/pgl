@@ -22,4 +22,5 @@ class Polygon : public Drawable {
 
 // Include polygons
 #include <drawable/cricle.hpp>
+#include <drawable/quad.hpp>
 #include <drawable/triangle.hpp>

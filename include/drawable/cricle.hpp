@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <drawable.hpp>
+#include <drawable/polygon.hpp>
 
 namespace pgl::drawable {
 class Circle : public Polygon {
