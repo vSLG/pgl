@@ -29,23 +29,11 @@ glm::vec2 Polygon::centroid() {
     return glm::vec2(size_) * (centroidWeights / polygonArea);
 }
 
-glm::vec3 Polygon::pos() {
-    // Will not be affected if centroid is set to false.
-    return pos_ + glm::vec3(centroid_, 0.f);
-}
-
-void Polygon::pos(glm::vec3 newPos) {
-    // If centroid is false, it will not affect.
-    // Always save pos_ as if centroid = false.
-    pos_ = newPos - glm::vec3(centroid_, 0.f);
-    update();
-}
-
 void Polygon::update() {
     model = glm::mat4(1.f);
 
     // Transformations will not be affected if centered is false.
-    centroid_ = centered ? centroid() : glm::vec2(0.f);
+    centroid_ = centered() ? centroid() : glm::vec2(0.f);
 
     // Always scale, rotate and translate in this order (read order is reverse).
     model = glm::translate(model, pos());
@@ -54,4 +42,18 @@ void Polygon::update() {
     // Undo centroid translation (if any was made) for scaling correctly.
     model = glm::translate(model, -glm::vec3(centroid_, 0.f));
     model = glm::scale(model, size());
+}
+
+glm::vec3 Polygon::pos() {
+    // Will not be affected if centroid is set to false.
+    return pos_ + glm::vec3(centroid_, 0.f);
+}
+
+bool Polygon::centered() {
+    return centered_;
+}
+
+void Polygon::centered(bool centered) {
+    centered_ = centered;
+    update();
 }

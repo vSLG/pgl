@@ -8,12 +8,14 @@ namespace pgl::drawable {
 class Polygon : public Drawable {
   public:
     virtual glm::vec2 centroid();
-    virtual glm::vec3 pos();
-    virtual void      pos(glm::vec3 newPos);
     virtual void      update();
-    bool              centered = true;
+
+    virtual glm::vec3 pos();
+    virtual bool      centered();
+    virtual void      centered(bool centered);
 
   protected:
+    bool      centered_ = true;
     glm::vec2 centroid_;
 };
 } // namespace pgl::drawable
