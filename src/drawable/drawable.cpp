@@ -13,12 +13,13 @@ using namespace pgl::drawable;
 Drawable::Drawable() {
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
+    shader = Shader::programs[Shader::simple];
 }
 
 Drawable::~Drawable() {
+    debug("(Drawable) Clearing drawable.");
     glDeleteBuffers(1, &vbo);
     glDeleteVertexArrays(1, &vao);
-    delete shader;
 }
 
 void Drawable::update() {

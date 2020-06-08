@@ -40,7 +40,6 @@
 // Defining their 'extern char ...' symbols.
 DEFINE_SHADER_RESOURCE(simple, vert);
 DEFINE_SHADER_RESOURCE(simple, frag);
-DEFINE_SHADER_RESOURCE(spacial, vert);
 
 namespace pgl::res {
 
@@ -56,7 +55,6 @@ void initResources() {
     debug("(Resources) Initializing resources.");
     CREATE_SHADER_RESOURCE(simple, vert);
     CREATE_SHADER_RESOURCE(simple, frag);
-    CREATE_SHADER_RESOURCE(spacial, vert);
 }
 
 std::string getShaderCode(Shader::ShaderName name, Shader::ShaderType type) {

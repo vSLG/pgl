@@ -23,6 +23,8 @@ using namespace pgl;
 // Used to get OpenGL shader type.
 const unsigned Shader::glShaders[] = {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER};
 
+std::vector<Shader *> Shader::programs;
+
 // Named Shader constructor
 Shader::Shader(ShaderName name) {
     debug("(Shader) Creating named Shader object: %u.", name);
@@ -45,6 +47,7 @@ Shader::Shader() {
 }
 
 Shader::~Shader() {
+    debug("(Shader) Clearing shader %u.", id);
     glDeleteProgram(id);
 }
 
@@ -141,5 +144,11 @@ void Shader::checkError(unsigned shader, const std::string type) {
                      "--------------------------------------------------- --");
 
         throw std::runtime_error("Shader compilation error.");
+    }
+}
+
+void Shader::initShaders() {
+    for (unsigned i = 0; i < NAME_N; i++) {
+        programs.push_back(new Shader((ShaderName) i));
     }
 }

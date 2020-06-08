@@ -25,11 +25,6 @@ Circle::Circle(glm::vec2 position, float radius) {
 
     buffersReady();
     drawMode = GL_TRIANGLE_FAN;
-
-    shader = new Shader();
-    shader->addShader(Shader::spacial, Shader::vert);
-    shader->addShader(Shader::simple, Shader::frag);
-    shader->linkProgram();
 }
 
 Circle::Circle(int x, int y, float radius) : Circle({x, y}, radius) {

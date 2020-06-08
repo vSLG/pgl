@@ -3,22 +3,25 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <set>
 #include <string>
+#include <vector>
 
 #include <glad/glad.h>
 
 namespace pgl {
 class Shader {
   public:
-    enum ShaderName { simple, spacial, NAME_N };
+    enum ShaderName { simple, NAME_N };
     enum ShaderType { vert, frag, TYPE_N };
     Shader(ShaderName name);
     Shader();
     ~Shader();
 
-    unsigned              id;
-    static const unsigned glShaders[];
+    unsigned                     id;
+    static const unsigned        glShaders[];
+    static std::vector<Shader *> programs;
+
+    static void initShaders();
 
     void use();
     void addShader(ShaderName name, ShaderType type);

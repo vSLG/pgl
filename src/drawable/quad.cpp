@@ -34,11 +34,6 @@ Quad::Quad(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4) {
         GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     drawMode = GL_TRIANGLES;
-
-    shader = new Shader();
-    shader->addShader(Shader::spacial, Shader::vert);
-    shader->addShader(Shader::simple, Shader::frag);
-    shader->linkProgram();
 }
 
 Quad::Quad(float x1,

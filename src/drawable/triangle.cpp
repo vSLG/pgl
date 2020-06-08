@@ -23,11 +23,6 @@ Triangle::Triangle(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3) {
 
     buffersReady();
     drawMode = GL_TRIANGLES;
-
-    shader = new Shader();
-    shader->addShader(Shader::spacial, Shader::vert);
-    shader->addShader(Shader::simple, Shader::frag);
-    shader->linkProgram();
 }
 
 Triangle::Triangle(int x1, int y1, int x2, int y2, int x3, int y3)

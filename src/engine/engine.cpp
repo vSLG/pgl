@@ -68,6 +68,8 @@ void Engine::initInternals(int w, int h) {
 
     debug("(Engine) Used OpenGL version: %s", glGetString(GL_VERSION));
 
+    Shader::initShaders();
+
     setup();
     isRunning = true;
 }
@@ -80,6 +82,16 @@ void Engine::background(int r, int g, int b) {
 
 void Engine::stop() {
     debug("(Engine) Stopping engine.");
+
+    delete camera;
+
+    for (auto obj : sceneObjs)
+        delete obj;
+    sceneObjs.clear();
+
+    for (auto obj : Shader::programs)
+        delete obj;
+    Shader::programs.clear();
 
     // Free memory, do not leak.
     SDL_GL_DeleteContext(glContext);
@@ -172,10 +184,10 @@ void Engine::toggleWireframe() {
 }
 
 void Engine::reset() {
-    delete camera;
     wireframe = false;
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    for (drawable::Drawable *obj : sceneObjs)
+    delete camera;
+    for (auto obj : sceneObjs)
         delete obj;
     sceneObjs.clear();
     setup();

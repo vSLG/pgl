@@ -9,10 +9,5 @@ class Rect : public Quad {
   public:
     Rect(glm::vec2 position, glm::vec2 size);
     Rect(float x, float y, float width, float height);
-
-  private:
-    const char *__name() {
-        return "Rect";
-    }
 };
 } // namespace pgl::drawable

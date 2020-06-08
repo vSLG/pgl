@@ -23,7 +23,8 @@ class Quad : public Polygon {
   private:
     unsigned ebo;
 
-    const char *__name() {
+  protected:
+    virtual const char *__name() {
         return "Quad";
     }
 };
