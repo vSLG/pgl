@@ -38,7 +38,8 @@ void Engine::initInternals(int w, int h) {
                               SDL_WINDOWPOS_CENTERED,
                               w,
                               h,
-                              SDL_WINDOW_OPENGL);
+                              SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE |
+                                  SDL_WINDOW_SHOWN);
 
     // Specify OpenGL version to SDL (really useful?), and tell that we want to
     // use core profile from OpenGL.
@@ -127,6 +128,19 @@ void Engine::handleEvents() {
                 break;
             case SDL_MOUSEMOTION:
                 camera->mouseMotion(&e.motion);
+                break;
+            case SDL_WINDOWEVENT:
+                switch (e.window.event) {
+                    case SDL_WINDOWEVENT_SIZE_CHANGED:
+                        debug("Window size changed to %dx%d.",
+                              e.window.data1,
+                              e.window.data2);
+                        width  = e.window.data1;
+                        height = e.window.data2;
+                        glViewport(0, 0, e.window.data1, e.window.data2);
+                        camera->setResolution(e.window.data1, e.window.data2);
+                        break;
+                }
                 break;
             default:
                 break;
